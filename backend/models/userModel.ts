@@ -16,8 +16,11 @@ interface UpdateUser {
     email?: string;
 }
 
+const hashPassword = async (password: string) => {
+    return await bcrypt.hash(password, 10);
+};
+
 export const createUser = async ({ name, password, email, isAdmin }: User) => {
-    // if (name === undefined || isAdmin === undefined) {
     if (name === undefined) {
         throw new Error("Required field is missing");
     }
@@ -29,7 +32,6 @@ export const createUser = async ({ name, password, email, isAdmin }: User) => {
 
     return newUser;
 };
-
 
 export const getUserByEmail = async (email: string) => {
     return await db.user.findUnique({ where: { email } });
@@ -48,11 +50,11 @@ export const authenticateUser = async ({ email, password }: User) => {
     }
 
     return user;
-}
+};
 
 export const getUserById = async (id: number) => {
     return await db.user.findUnique({ where: { id } });
-}
+};
 
 export const updateUserProfileData = async ({ userId, name, email }: UpdateUser) => {
     const user = await db.user.findUnique({ where: { id: userId } });
@@ -70,9 +72,4 @@ export const updateUserProfileData = async ({ userId, name, email }: UpdateUser)
     });
 
     return updatedUser;
-}
-
-
-const hashPassword = async (password: string) => {
-    return await bcrypt.hash(password, 10);
 };
