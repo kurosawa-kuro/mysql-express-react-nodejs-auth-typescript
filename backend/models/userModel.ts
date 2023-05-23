@@ -10,6 +10,12 @@ interface User {
     isAdmin?: boolean;
 }
 
+interface UpdateUser {
+    userId: number;
+    name?: string;
+    email?: string;
+}
+
 export const createUser = async ({ name, password, email, isAdmin }: User) => {
     // if (name === undefined || isAdmin === undefined) {
     if (name === undefined) {
@@ -48,35 +54,25 @@ export const getUserById = async (id: number) => {
     return await db.user.findUnique({ where: { id } });
 }
 
-// export const updateUserProfileData = async ({ userId, name, email }) => {
-//     const user = await db.user.findUnique({ where: { id: userId } });
+export const updateUserProfileData = async ({ userId, name, email }: UpdateUser) => {
+    const user = await db.user.findUnique({ where: { id: userId } });
 
-//     if (!user) {
-//         throw new Error('User not found');
-//     }
+    if (!user) {
+        throw new Error('User not found');
+    }
 
-//     user.name = name || user.name;
-//     user.email = email || user.email;
+    user.name = name || user.name;
+    user.email = email || user.email;
 
-//     const updatedUser = await db.user.update({
-//         where: { id: user.id },
-//         data: { name: user.name, email: user.email }
-//     });
+    const updatedUser = await db.user.update({
+        where: { id: user.id },
+        data: { name: user.name, email: user.email }
+    });
 
-//     return updatedUser;
-// }
+    return updatedUser;
+}
 
-// export const updateUserPassword = async (id, newPassword) => {
-//     const hashedPassword = await hashPassword(newPassword);
-//     const user = await db.user.update({ where: { id }, data: { password: hashedPassword } });
-//     return user ? omitPassword(user) : null;
-// }
 
 const hashPassword = async (password: string) => {
     return await bcrypt.hash(password, 10);
 };
-
-// const omitPassword = (user) => {
-//     const { password, ...userWithoutPassword } = user;
-//     return userWithoutPassword;
-// };

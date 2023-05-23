@@ -1,19 +1,13 @@
-import express, { Express, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken';
 import {
   createUser,
   getUserByEmail,
   authenticateUser,
-  getUserById
+  getUserById,
+  updateUserProfileData
 } from '../models/userModel';
-// import {
-//   createUser,
-//   getUserByEmail,
-//   authenticateUser,
-//   updateUserProfileData,
-//   getUserById
-// } from '../models/userModel.ts';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -101,21 +95,28 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 
-// // @desc    Update user profile
-// // @route   PUT /api/users/profile
-// // @access  Private
-// export const updateUserProfile = asyncHandler(async (req, res) => {
-//   const updatedUser = await updateUserProfileData({ userId: req.user.id, name: req.body.name, email: req.body.email });
+// @desc    Update user profile
+// @route   PUT /api/users/profile
+// @access  Private
+export const updateUserProfile = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(401);
+    throw new Error('Not authorized, no user');
+  }
 
-//   if (updatedUser) {
-//     res.json({
-//       id: updatedUser.id,
-//       name: updatedUser.name,
-//       email: updatedUser.email,
-//     });
-//   } else {
-//     res.status(404);
-//     throw new Error('User not found');
-//   }
-// });
+  try {
+    const updatedUser = await updateUserProfileData({ userId: req.user.id, name: req.body.name, email: req.body.email });
+
+    res.json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    throw new Error('Failed to update user profile');
+  }
+});
+
 

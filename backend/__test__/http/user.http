@@ -1,3 +1,13 @@
+@new_user_name =John Doe
+@new_user_email =johndoe@example.com
+@new_user_password =password123
+
+@update_user_name =Update John Doe
+@update_user_email =update_johndoe@example.com
+@update_user_password =password123
+
+@token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY4NDczMzgxOSwiZXhwIjoxNjg3MzI1ODE9fQ.afqWA0bGvAAvZTIx0z9pgk5SvAjUsSMFswn4vOW95gw"
+
 ###
 # Register a new user
 # @desc: Register a new user
@@ -7,9 +17,9 @@ POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-  "name": "John Doe4",
-  "email": "johndoe4@example.com",
-  "password": "password123"
+  "name": "{{new_user_name}}",
+  "email": "{{new_user_email}}",
+  "password": "{{new_user_password}}"
 }
 
 ###
@@ -21,9 +31,8 @@ POST http://localhost:8080/api/users/login
 Content-Type: application/json
 
 {
-  "name": "John Doe4",
-  "email": "johndoe4@example.com",
-  "password": "password123"
+  "email": "{{new_user_email}}",
+  "password": "{{new_user_password}}"
 }
 
 ###
@@ -33,7 +42,6 @@ Content-Type: application/json
 # @access: Private
 POST http://localhost:8080/api/users/logout
 Content-Type: application/json
-Cookie: token=YOUR_TOKEN_HERE
 
 ###
 # Get User Profile
@@ -42,7 +50,6 @@ Cookie: token=YOUR_TOKEN_HERE
 # @access: Private
 GET http://localhost:8080/api/users/profile
 Content-Type: application/json
-Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY4NDczMzgxOSwiZXhwIjoxNjg3MzI1ODE5fQ.afqWA0bGvAAvZTIx0z9pgk5SvAjUsSMFswn4vOW95gw
 
 ###
 # Update User Profile
@@ -51,10 +58,10 @@ Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY4N
 # @access: Private
 PUT http://localhost:8080/api/users/profile
 Content-Type: application/json
-Cookie: token=YOUR_TOKEN_HERE
 
 {
-  "name": "Jane Doe",
-  "email": "janedoe@example.com",
-  "password": "password456"
+  "name": "{{update_user_name}}",
+  "email": "{{update_user_email}}",
+  "password": "{{update_user_password}}"
 }
+
