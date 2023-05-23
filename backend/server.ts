@@ -5,6 +5,6 @@ dotenv.config();
 
 import { app } from "./index";
 
-const port = process.env.PORT || 8080;
+const port: string | number = process.env.PORT || 8080;
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
