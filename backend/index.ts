@@ -1,7 +1,7 @@
 // backend\index.ts
 
 import path from 'path';
-import express, { Express, Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import express, { Express, Request, Response } from 'express';
 import cors, { CorsOptions } from "cors";
 import dotenv from 'dotenv';
 dotenv.config();

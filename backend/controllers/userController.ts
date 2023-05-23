@@ -1,3 +1,4 @@
+import express, { Express, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken';
 import {
@@ -64,16 +65,16 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// // @desc    Logout user / clear cookie
-// // @route   POST /api/users/logout
-// // @access  Public
-// export const logoutUser = (req, res) => {
-//   res.cookie('jwt', '', {
-//     httpOnly: true,
-//     expires: new Date(0),
-//   });
-//   res.status(200).json({ message: 'Logged out successfully' });
-// };
+// @desc    Logout user / clear cookie
+// @route   POST /api/users/logout
+// @access  Public
+export const logoutUser = (req: Request, res: Response) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
+};
 
 // // @desc    Get user profile
 // // @route   GET /api/users/profile

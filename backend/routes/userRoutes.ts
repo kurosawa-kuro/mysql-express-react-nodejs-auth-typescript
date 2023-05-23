@@ -1,7 +1,8 @@
 import express, { Router } from 'express';
 import {
   registerUser,
-  loginUser
+  loginUser,
+  logoutUser
 } from '../controllers/userController';
 // import {
 //   loginUser,
@@ -16,7 +17,8 @@ export const router: Router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-// router.post('/logout', logoutUser);
+router.post('/logout', logoutUser);
+
 // router
 //   .route('/profile')
 //   .get(protect, getUserProfile)
