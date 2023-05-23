@@ -1,10 +1,10 @@
-@new_user_name =John Doe
-@new_user_email =johndoe@example.com
-@new_user_password =password123
+@new_user_name =aaa
+@new_user_email =aaa@aaa.aaa
+@new_user_password =aaa
 
-@update_user_name =Update John Doe
-@update_user_email =update_johndoe@example.com
-@update_user_password =password123
+@update_user_name =Update aaa
+@update_user_email =update_aaa@aaa.aaa
+@update_user_password =aaa
 
 @token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY4NDczMzgxOSwiZXhwIjoxNjg3MzI1ODE9fQ.afqWA0bGvAAvZTIx0z9pgk5SvAjUsSMFswn4vOW95gw"
 
