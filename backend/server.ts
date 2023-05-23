@@ -1,9 +1,9 @@
-// backend\server.js
+// backend\server.ts
 
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { app } from "./index.js";
+import { app } from "./index";
 
 const port = process.env.PORT || 8080;
 
