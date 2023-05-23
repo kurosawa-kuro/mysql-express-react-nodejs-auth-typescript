@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import {
   registerUser,
+  loginUser
 } from '../controllers/userController';
 // import {
 //   loginUser,
@@ -14,7 +15,7 @@ import {
 export const router: Router = express.Router();
 
 router.post('/register', registerUser);
-// router.post('/login', loginUser);
+router.post('/login', loginUser);
 // router.post('/logout', logoutUser);
 // router
 //   .route('/profile')

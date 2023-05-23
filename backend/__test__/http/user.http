@@ -17,7 +17,7 @@ Content-Type: application/json
 # @desc: Authenticate user
 # @route: POST /api/users/auth
 # @access: Public
-POST http://localhost:8080/api/users/auth
+POST http://localhost:8080/api/users/login
 Content-Type: application/json
 
 {

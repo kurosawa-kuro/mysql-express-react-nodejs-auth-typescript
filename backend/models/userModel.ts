@@ -4,13 +4,18 @@ import bcrypt from "bcryptjs";
 import { db } from "../database/prisma/prismaClient";
 
 interface User {
-    name: string;
+    name?: string;
     password: string;
     email: string;
     isAdmin?: boolean;
 }
 
 export const createUser = async ({ name, password, email, isAdmin }: User) => {
+    // if (name === undefined || isAdmin === undefined) {
+    if (name === undefined) {
+        throw new Error("Required field is missing");
+    }
+
     const hashedPassword = await hashPassword(password);
     const newUser = await db.user.create({
         data: { name, password: hashedPassword, email, isAdmin },
@@ -19,24 +24,25 @@ export const createUser = async ({ name, password, email, isAdmin }: User) => {
     return newUser;
 };
 
+
 export const getUserByEmail = async (email: string) => {
     return await db.user.findUnique({ where: { email } });
 };
 
-// export const authenticateUser = async (email, password) => {
-//     const user = await db.user.findUnique({ where: { email } });
+export const authenticateUser = async ({ email, password }: User) => {
+    const user = await db.user.findUnique({ where: { email } });
 
-//     if (!user) {
-//         throw new Error("User does not exist");
-//     }
+    if (!user) {
+        throw new Error("User does not exist");
+    }
 
-//     const isPasswordCorrect = await bcrypt.compare(password, user.password);
-//     if (!isPasswordCorrect) {
-//         throw new Error("Password is incorrect");
-//     }
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+        throw new Error("Password is incorrect");
+    }
 
-//     return user;
-// }
+    return user;
+}
 
 // export const getUserById = async (id) => {
 //     return await db.user.findUnique({ where: { id } });
