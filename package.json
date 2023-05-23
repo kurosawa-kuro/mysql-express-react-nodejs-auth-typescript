@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node ./backend/server.ts",
     "server": "nodemon ./backend/server.ts",
-    "setupDatabaseForOperations": "ts-node ./backend/database/databaseOperations/initializeDatabase.ts",
-    "setupDatabaseForOperations_user": "ts-node ./backend/database/databaseOperations/initializeDatabaseWithDefaultUser.ts",
+    "initializeDatabase": "ts-node ./backend/database/databaseOperations/initializeDatabase.ts",
+    "initializeDatabaseWithDefaultUser": "ts-node ./backend/database/databaseOperations/initializeDatabaseWithDefaultUser.ts",
     "build": "tsc",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
