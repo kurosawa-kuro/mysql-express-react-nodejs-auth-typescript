@@ -1,6 +1,6 @@
 // test.js
 import request from 'supertest';
-import { app } from '../index.js';
+import { app } from '../index';
 
 describe('GET /', () => {
     it('responds with "API is running...."', async () => {

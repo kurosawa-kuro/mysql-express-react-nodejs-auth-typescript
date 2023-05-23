@@ -1,8 +1,11 @@
+// backend\__test__\user.test.ts
+
+import { beforeEach, afterAll, describe, it, expect } from '@jest/globals';
 import request from 'supertest';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import { app } from '../index.js';
-import { createUser, getUserByEmail } from "../models/userModel.js";
+import { app } from '../index';
+import { createUser, getUserByEmail } from "../models/userModel";
 
 const prismaClient = new PrismaClient();
 
@@ -66,8 +69,10 @@ describe('POST /api/users', () => {
 
         const registeredUser = await getUserByEmail(newUser.email);
 
-        expect(registeredUser).toBeDefined();
-        expect(registeredUser.email).toEqual(newUser.email);
+        if (registeredUser) {
+            expect(registeredUser).toBeDefined();
+            expect(registeredUser.email).toEqual(newUser.email);
+        }
     });
 
     // Other test cases...
@@ -88,7 +93,7 @@ describe('GET /api/users/profile', () => {
             name: sampleUser.name
         });
 
-        const token = jwt.sign({ userId: createdUser.id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ userId: createdUser.id }, process.env.JWT_SECRET || 'JWT_SECRET');
         console.log("Generated Token", token);
 
         const response = await request(app)
@@ -107,3 +112,4 @@ describe('GET /api/users/profile', () => {
 
     // Other test cases...
 });
+

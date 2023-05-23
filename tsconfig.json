@@ -5,6 +5,10 @@
     "outDir": "backend/dist",
     "strict": true,
     "esModuleInterop": true,
+    "types": [
+      "jest",
+      "node"
+    ]
   },
   "include": [
     "backend/**/*.ts"
