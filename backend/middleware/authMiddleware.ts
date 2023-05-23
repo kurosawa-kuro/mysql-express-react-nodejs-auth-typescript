@@ -2,7 +2,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import { db } from "../database/prisma/prismaClient";
 
-type UserWithoutPassword = {
+interface UserWithoutPassword {
   id: number;
   name: string;
   email: string;
@@ -29,7 +29,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
       if (user) {
         const { password, ...userWithoutPassword } = user;
-        req.user = userWithoutPassword;
+        req.user = userWithoutPassword as UserWithoutPassword;
       } else {
         req.user = null;
       }
