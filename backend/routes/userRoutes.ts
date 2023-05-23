@@ -1,21 +1,21 @@
 import express, { Router } from 'express';
 import { protect } from '../middleware/authMiddleware';
 import {
-  registerUser,
-  loginUser,
-  logoutUser,
-  getUserProfile,
-  updateUserProfile
+  registerUserAction,
+  loginUserAction,
+  logoutUserAction,
+  getUserProfileAction,
+  updateUserProfileAction
 } from '../controllers/userController';
 
 export const userRoutes: Router = express.Router();
 
-userRoutes.post('/register', registerUser);
-userRoutes.post('/login', loginUser);
-userRoutes.post('/logout', logoutUser);
+userRoutes.post('/register', registerUserAction);
+userRoutes.post('/login', loginUserAction);
+userRoutes.post('/logout', logoutUserAction);
 
 userRoutes
   .route('/profile')
-  .get(protect, getUserProfile)
-  .put(protect, updateUserProfile);
+  .get(protect, getUserProfileAction)
+  .put(protect, updateUserProfileAction);
 

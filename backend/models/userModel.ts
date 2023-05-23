@@ -20,7 +20,7 @@ const hashPassword = async (password: string) => {
     return await bcrypt.hash(password, 10);
 };
 
-export const createUser = async ({ name, password, email, isAdmin }: User) => {
+export const registerUser = async ({ name, password, email, isAdmin }: User) => {
     if (name === undefined) {
         throw new Error("Required field is missing");
     }
@@ -37,7 +37,7 @@ export const getUserByEmail = async (email: string) => {
     return await db.user.findUnique({ where: { email } });
 };
 
-export const authenticateUser = async ({ email, password }: User) => {
+export const loginUser = async ({ email, password }: User) => {
     const user = await db.user.findUnique({ where: { email } });
 
     if (!user) {
@@ -56,7 +56,7 @@ export const getUserById = async (id: number) => {
     return await db.user.findUnique({ where: { id } });
 };
 
-export const updateUserProfileData = async ({ userId, name, email }: UpdateUser) => {
+export const updateUserProfile = async ({ userId, name, email }: UpdateUser) => {
     const user = await db.user.findUnique({ where: { id: userId } });
 
     if (!user) {

@@ -1,5 +1,5 @@
 import { db } from "../prisma/prismaClient";
-import { createUser } from "../../models/userModel";
+import { registerUser } from "../../models/userModel";
 
 async function establishDatabaseConnection() {
     try {
@@ -96,7 +96,7 @@ export async function setupDatabaseForOperations() {
 
 async function main() {
     await setupDatabaseForOperations();
-    await createUser({ name: "aaa", email: "aaa@aaa.aaa", password: "aaa", isAdmin: false });
+    await registerUser({ name: "aaa", email: "aaa@aaa.aaa", password: "aaa", isAdmin: false });
 }
 
 main()

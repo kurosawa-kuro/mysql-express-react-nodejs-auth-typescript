@@ -2,20 +2,20 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken';
 import {
-  createUser,
+  registerUser,
   getUserByEmail,
-  authenticateUser,
+  loginUser,
   getUserById,
-  updateUserProfileData
+  updateUserProfile
 } from '../models/userModel';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
 // @access  Public
-export const loginUser = asyncHandler(async (req, res) => {
+export const loginUserAction = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await authenticateUser({ email, password });
+  const user = await loginUser({ email, password });
 
   if (user) {
     generateToken(res, user.id);
@@ -31,7 +31,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 // @desc    Register a new user
 // @route   POST /api/users
 // @access  Public
-export const registerUser = asyncHandler(async (req, res) => {
+export const registerUserAction = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
   const userExists = await getUserByEmail(email);
@@ -41,7 +41,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new Error('User already exists');
   }
 
-  const user = await createUser({ name, email, password, isAdmin: false });
+  const user = await registerUser({ name, email, password, isAdmin: false });
 
   if (user) {
     generateToken(res, user.id);
@@ -57,7 +57,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 // @desc    Logout user / clear cookie
 // @route   POST /api/users/logout
 // @access  Public
-export const logoutUser = (req: Request, res: Response) => {
+export const logoutUserAction = (req: Request, res: Response) => {
   res.cookie('jwt', '', {
     httpOnly: true,
     expires: new Date(0),
@@ -68,7 +68,7 @@ export const logoutUser = (req: Request, res: Response) => {
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
-export const getUserProfile = asyncHandler(async (req, res) => {
+export const getUserProfileAction = asyncHandler(async (req, res) => {
   if (req.user) {
     const user = await getUserById(req.user.id);
 
@@ -88,14 +88,14 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 // @access  Private
-export const updateUserProfile = asyncHandler(async (req, res) => {
+export const updateUserProfileAction = asyncHandler(async (req, res) => {
   if (!req.user) {
     res.status(401);
     throw new Error('Not authorized, no user');
   }
 
   try {
-    const updatedUser = await updateUserProfileData({ userId: req.user.id, name: req.body.name, email: req.body.email });
+    const updatedUser = await updateUserProfile({ userId: req.user.id, name: req.body.name, email: req.body.email });
 
     const { id, name, email } = updatedUser;
     res.json({ id, name, email });

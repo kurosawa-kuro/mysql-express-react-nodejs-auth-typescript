@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 
 import { app } from '../index';
-import { createUser, getUserByEmail } from '../models/userModel';
+import { registerUser, getUserByEmail } from '../models/userModel';
 
 const prismaClient = new PrismaClient();
 
@@ -25,7 +25,7 @@ describe('POST /api/users/login', () => {
             name: 'Sample',
         };
 
-        await createUser(sampleUser);
+        await registerUser(sampleUser);
 
         const response = await request(app)
             .post('/api/users/login')
@@ -72,7 +72,7 @@ describe('GET /api/users/profile', () => {
             name: 'Sample',
         };
 
-        const createdUser = await createUser(sampleUser);
+        const createdUser = await registerUser(sampleUser);
 
         const token = jwt.sign({ userId: createdUser.id }, process.env.JWT_SECRET || 'JWT_SECRET');
 
