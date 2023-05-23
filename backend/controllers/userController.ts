@@ -20,11 +20,8 @@ export const loginUser = asyncHandler(async (req, res) => {
   if (user) {
     generateToken(res, user.id);
 
-    res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    });
+    const { id, name, email } = user;
+    res.json({ id, name, email });
   } else {
     res.status(401);
     throw new Error('Invalid email or password');
@@ -49,11 +46,8 @@ export const registerUser = asyncHandler(async (req, res) => {
   if (user) {
     generateToken(res, user.id);
 
-    res.status(201).json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    });
+    const { id, name, email } = user;
+    res.status(201).json({ id, name, email });
   } else {
     res.status(400);
     throw new Error('Invalid user data');
@@ -79,11 +73,8 @@ export const getUserProfile = asyncHandler(async (req, res) => {
     const user = await getUserById(req.user.id);
 
     if (user) {
-      res.json({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      });
+      const { id, name, email } = user;
+      res.json({ id, name, email });
     } else {
       res.status(404);
       throw new Error('User not found');
@@ -93,7 +84,6 @@ export const getUserProfile = asyncHandler(async (req, res) => {
     throw new Error('Not authorized, no user');
   }
 });
-
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
@@ -107,16 +97,11 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   try {
     const updatedUser = await updateUserProfileData({ userId: req.user.id, name: req.body.name, email: req.body.email });
 
-    res.json({
-      id: updatedUser.id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-    });
+    const { id, name, email } = updatedUser;
+    res.json({ id, name, email });
   } catch (error) {
     console.error(error);
     res.status(500);
     throw new Error('Failed to update user profile');
   }
 });
-
-
