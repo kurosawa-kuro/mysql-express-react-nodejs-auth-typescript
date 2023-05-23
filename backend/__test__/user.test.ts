@@ -1,11 +1,10 @@
-// backend\__test__\user.test.ts
-
 import { beforeEach, afterAll, describe, it, expect } from '@jest/globals';
 import request from 'supertest';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+
 import { app } from '../index';
-import { createUser, getUserByEmail } from "../models/userModel";
+import { createUser, getUserByEmail } from '../models/userModel';
 
 const prismaClient = new PrismaClient();
 
@@ -20,25 +19,17 @@ afterAll(async () => {
 
 describe('POST /api/users/login', () => {
     it('should login user', async () => {
-
         const sampleUser = {
             email: 'sample@gmail.com',
             password: 'password',
-            name: 'Sample'
-        }
+            name: 'Sample',
+        };
 
-        await createUser({
-            email: sampleUser.email,
-            password: sampleUser.password,
-            name: sampleUser.name
-        });
+        await createUser(sampleUser);
 
         const response = await request(app)
             .post('/api/users/login')
             .send({ email: sampleUser.email, password: sampleUser.password });
-
-        console.log("Response Body", response.body);
-        console.log("response.headers['set-cookie']", response.headers['set-cookie']);
 
         expect(response.statusCode).toEqual(200);
         expect(response.body).toHaveProperty('id');
@@ -50,18 +41,15 @@ describe('POST /api/users/login', () => {
 
 describe('POST /api/users', () => {
     it('should register a new user', async () => {
-
         const newUser = {
             email: 'newUser@gmail.com',
             password: 'password',
-            name: 'New User'
-        }
+            name: 'New User',
+        };
 
         const response = await request(app)
             .post('/api/users/register')
             .send(newUser);
-
-        console.log("Response Body", response.body);
 
         expect(response.statusCode).toEqual(201);
         expect(response.body).toHaveProperty('id');
@@ -78,27 +66,19 @@ describe('POST /api/users', () => {
 
 describe('GET /api/users/profile', () => {
     it('should return user profile', async () => {
-
         const sampleUser = {
             email: 'sample@gmail.com',
             password: 'password',
-            name: 'Sample'
-        }
+            name: 'Sample',
+        };
 
-        const createdUser = await createUser({
-            email: sampleUser.email,
-            password: sampleUser.password,
-            name: sampleUser.name
-        });
+        const createdUser = await createUser(sampleUser);
 
         const token = jwt.sign({ userId: createdUser.id }, process.env.JWT_SECRET || 'JWT_SECRET');
-        console.log("Generated Token", token);
 
         const response = await request(app)
             .get('/api/users/profile')
             .set('Cookie', `jwt=${token}`);
-
-        console.log("Profile Response Body", response.body);
 
         expect(response.statusCode).toEqual(200);
         expect(response.body).toHaveProperty('id');
@@ -110,4 +90,3 @@ describe('GET /api/users/profile', () => {
 
     // Other test cases...
 });
-
