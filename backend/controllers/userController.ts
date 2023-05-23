@@ -75,6 +75,7 @@ export const getUserProfileAction = asyncHandler(async (req, res) => {
 
     if (user) {
       const { id, name, email } = user;
+
       res.json({ id, name, email });
     } else {
       res.status(404);
@@ -91,17 +92,19 @@ export const getUserProfileAction = asyncHandler(async (req, res) => {
 // @access  Private
 export const updateUserProfileAction = asyncHandler(async (req, res) => {
   if (!req.user) {
+
     res.status(401);
     throw new Error('Not authorized, no user');
   }
 
   try {
     const updatedUser = await updateUserProfile({ userId: req.user.id, name: req.body.name, email: req.body.email });
-
     const { id, name, email } = updatedUser;
+
     res.json({ id, name, email });
   } catch (error) {
     console.error(error);
+
     res.status(500);
     throw new Error('Failed to update user profile');
   }
