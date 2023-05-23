@@ -20,9 +20,10 @@ afterAll(async () => {
 describe('POST /api/users/login', () => {
     it('should login user', async () => {
         const sampleUser = {
-            email: 'sample@gmail.com',
+            email: 'test@example.com',
             password: 'password',
-            name: 'Sample',
+            name: 'Test User',
+            isAdmin: false
         };
 
         await registerUser(sampleUser);
@@ -50,6 +51,7 @@ describe('POST /api/users', () => {
         const response = await request(app)
             .post('/api/users/register')
             .send(newUser);
+        // console.log("response.body", response.body);
 
         expect(response.statusCode).toEqual(201);
         expect(response.body).toHaveProperty('id');
@@ -67,9 +69,10 @@ describe('POST /api/users', () => {
 describe('GET /api/users/profile', () => {
     it('should return user profile', async () => {
         const sampleUser = {
-            email: 'sample@gmail.com',
+            email: 'test@example.com',
             password: 'password',
-            name: 'Sample',
+            name: 'Test User',
+            isAdmin: false
         };
 
         const createdUser = await registerUser(sampleUser);
