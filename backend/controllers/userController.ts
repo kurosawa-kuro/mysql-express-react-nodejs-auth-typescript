@@ -4,7 +4,8 @@ import generateToken from '../utils/generateToken';
 import {
   createUser,
   getUserByEmail,
-  authenticateUser
+  authenticateUser,
+  getUserById
 } from '../models/userModel';
 // import {
 //   createUser,
@@ -76,23 +77,29 @@ export const logoutUser = (req: Request, res: Response) => {
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
-// // @desc    Get user profile
-// // @route   GET /api/users/profile
-// // @access  Private
-// export const getUserProfile = asyncHandler(async (req, res) => {
-//   const user = await getUserById(req.user.id);
+// @desc    Get user profile
+// @route   GET /api/users/profile
+// @access  Private
+export const getUserProfile = asyncHandler(async (req, res) => {
+  if (req.user) {
+    const user = await getUserById(req.user.id);
 
-//   if (user) {
-//     res.json({
-//       id: user.id,
-//       name: user.name,
-//       email: user.email,
-//     });
-//   } else {
-//     res.status(404);
-//     throw new Error('User not found');
-//   }
-// });
+    if (user) {
+      res.json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+  } else {
+    res.status(401);
+    throw new Error('Not authorized, no user');
+  }
+});
+
 
 // // @desc    Update user profile
 // // @route   PUT /api/users/profile

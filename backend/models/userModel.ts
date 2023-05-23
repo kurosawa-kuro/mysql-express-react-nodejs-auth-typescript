@@ -44,9 +44,9 @@ export const authenticateUser = async ({ email, password }: User) => {
     return user;
 }
 
-// export const getUserById = async (id) => {
-//     return await db.user.findUnique({ where: { id } });
-// }
+export const getUserById = async (id: number) => {
+    return await db.user.findUnique({ where: { id } });
+}
 
 // export const updateUserProfileData = async ({ userId, name, email }) => {
 //     const user = await db.user.findUnique({ where: { id: userId } });

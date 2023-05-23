@@ -2,7 +2,8 @@ import express, { Router } from 'express';
 import {
   registerUser,
   loginUser,
-  logoutUser
+  logoutUser,
+  getUserProfile
 } from '../controllers/userController';
 // import {
 //   loginUser,
@@ -11,7 +12,7 @@ import {
 //   getUserProfile,
 //   updateUserProfile,
 // } from '../controllers/userController';
-// import { protect } from '../middleware/authMiddleware.js';
+import { protect } from '../middleware/authMiddleware';
 
 export const router: Router = express.Router();
 
@@ -19,7 +20,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);
 
-// router
-//   .route('/profile')
-//   .get(protect, getUserProfile)
+router
+  .route('/profile')
+  .get(protect, getUserProfile)
 //   .put(protect, updateUserProfile);
