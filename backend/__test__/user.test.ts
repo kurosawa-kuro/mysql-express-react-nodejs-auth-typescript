@@ -69,10 +69,8 @@ describe('POST /api/users', () => {
 
         const registeredUser = await getUserByEmail(newUser.email);
 
-        if (registeredUser) {
-            expect(registeredUser).toBeDefined();
-            expect(registeredUser.email).toEqual(newUser.email);
-        }
+        expect(registeredUser).toBeDefined();
+        expect(registeredUser!.email).toEqual(newUser.email);
     });
 
     // Other test cases...
