@@ -8,13 +8,13 @@ import {
   updateUserProfile
 } from '../controllers/userController';
 
-export const router: Router = express.Router();
+export const userRoutes: Router = express.Router();
 
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.post('/logout', logoutUser);
+userRoutes.post('/register', registerUser);
+userRoutes.post('/login', loginUser);
+userRoutes.post('/logout', logoutUser);
 
-router
+userRoutes
   .route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);

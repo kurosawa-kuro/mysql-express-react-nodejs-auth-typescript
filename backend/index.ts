@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
-import { router as userRoutes } from './routes/userRoutes';
+import { userRoutes } from './routes/userRoutes';
 
 dotenv.config();
 
