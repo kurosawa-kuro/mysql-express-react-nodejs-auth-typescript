@@ -41,7 +41,8 @@ export const registerUserAction = asyncHandler(async (req, res) => {
     throw new Error('User already exists');
   }
 
-  const user = await registerUser({ name, email, password, isAdmin: false });
+  const user =
+    await registerUser({ name, email, password, isAdmin: false });
 
   if (user) {
     generateToken(res, user.id);
