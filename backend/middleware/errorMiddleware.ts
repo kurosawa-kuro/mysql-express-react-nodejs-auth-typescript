@@ -11,7 +11,7 @@ export const errorHandler: ErrorRequestHandler =
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;
 
-    // If Mongoose not found error, set to 404 and change message
+    // If not found error, set to 404 and change message
     // if (err.name === 'CastError' && err.kind === 'ObjectId') {
     if (err.name === 'CastError') {
       statusCode = 404;
