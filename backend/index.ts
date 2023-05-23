@@ -3,11 +3,13 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import { notFound, errorHandler } from './middleware/errorMiddleware';
+
 import { userRoutes } from './routes/userRoutes';
+import { notFound, errorHandler } from './middleware/errorMiddleware';
 
 dotenv.config();
 
+// Create Express app
 export const app: Express = express();
 
 // Middleware
