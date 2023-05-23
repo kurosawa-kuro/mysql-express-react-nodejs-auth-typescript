@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import { protect } from '../middleware/authMiddleware';
 import {
   registerUser,
   loginUser,
@@ -6,7 +7,6 @@ import {
   getUserProfile,
   updateUserProfile
 } from '../controllers/userController';
-import { protect } from '../middleware/authMiddleware';
 
 export const router: Router = express.Router();
 
@@ -18,3 +18,4 @@ router
   .route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
+
