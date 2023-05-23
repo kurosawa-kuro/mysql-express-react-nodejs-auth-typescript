@@ -2,24 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import { db } from "../database/prisma/prismaClient";
-
-interface User {
-    name: string;
-    password: string;
-    email: string;
-    isAdmin: boolean;
-}
-
-interface LoginUser {
-    password: string;
-    email: string;
-}
-
-interface UpdateUser {
-    userId: number;
-    name: string;
-    email: string;
-}
+import { FullUser, LoginCredentials, UserUpdateData } from "../interfaces/userInterface";
 
 const hashPassword = async (password: string) => {
     return await bcrypt.hash(password, 10);
@@ -35,7 +18,7 @@ export const getUserById = async (id: number) => {
     return user;
 };
 
-export const registerUser = async (user: User) => {
+export const registerUser = async (user: FullUser) => {
     const hashedPassword = await hashPassword(user.password);
     const newUser = await db.user.create({
         data: {
@@ -53,7 +36,7 @@ export const getUserByEmail = async (email: string) => {
     return await db.user.findUnique({ where: { email } });
 };
 
-export const loginUser = async (user: LoginUser) => {
+export const loginUser = async (user: LoginCredentials) => {
     const dbUser = await getUserByEmail(user.email);
 
     if (!dbUser) {
@@ -68,7 +51,7 @@ export const loginUser = async (user: LoginUser) => {
     return dbUser;
 };
 
-export const updateUserProfile = async (user: UpdateUser) => {
+export const updateUserProfile = async (user: UserUpdateData) => {
     const dbUser = await getUserById(user.userId);
 
     dbUser.name = user.name || dbUser.name;

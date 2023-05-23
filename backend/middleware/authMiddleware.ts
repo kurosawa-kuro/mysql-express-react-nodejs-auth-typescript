@@ -1,13 +1,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import { db } from "../database/prisma/prismaClient";
-
-interface UserWithoutPassword {
-  id: number;
-  name: string;
-  email: string;
-  isAdmin: boolean;
-};
+import { UserWithoutPassword } from '../interfaces/userInterface';
 
 declare global {
   namespace Express {
