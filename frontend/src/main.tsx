@@ -12,8 +12,11 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
 import App from './App.tsx'
 import './index.css'
+import 'tailwindcss/tailwind.css'
+
 
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/auth/LoginScreen.tsx';

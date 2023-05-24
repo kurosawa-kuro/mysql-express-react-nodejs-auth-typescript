@@ -24,10 +24,10 @@ const RegisterScreen = () => {
 
     // Component JSX
     return (
-        <div className="form-container">
+        <div>
             <h1>Register</h1>
             <form onSubmit={submitHandler}>
-                <div className='my-2' id='name'>
+                <div id='name'>
                     <label>Name</label>
                     <input
                         type='name'
@@ -37,7 +37,7 @@ const RegisterScreen = () => {
                     />
                 </div>
 
-                <div className='my-2' id='email'>
+                <div id='email'>
                     <label>Email Address</label>
                     <input
                         type='email'
@@ -47,7 +47,7 @@ const RegisterScreen = () => {
                     />
                 </div>
 
-                <div className='my-2' id='password'>
+                <div id='password'>
                     <label>Password</label>
                     <input
                         type='password'
@@ -57,7 +57,7 @@ const RegisterScreen = () => {
                     />
                 </div>
 
-                <div className='my-2' id='confirmPassword'>
+                <div id='confirmPassword'>
                     <label>Confirm Password</label>
                     <input
                         type='password'
@@ -67,14 +67,14 @@ const RegisterScreen = () => {
                     />
                 </div>
 
-                <button type='submit' className='register-button mt-3'>
+                <button type='submit' className='mt-3'>
                     Register
                 </button>
 
                 {registerUserMutation.isLoading && <Loader />}
             </form>
 
-            <div className='py-3'>
+            <div>
                 <span>
                     Already have an account? <Link to={`/login`}>Login</Link>
                 </span>

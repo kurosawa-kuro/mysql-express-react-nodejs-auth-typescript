@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-.container {
+/* .container {
   width: 100%;
   max-width: 960px;
   padding-right: 15px;
@@ -232,7 +232,7 @@ button {
 .navbar-dropdown:hover .navbar-dropdown-menu {
   display: flex;
   flex-direction: row;
-}
+} */
 
 .loader {
   border: 16px solid #f3f3f3;

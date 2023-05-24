@@ -16,53 +16,49 @@ const ProfileScreen = () => {
     if (isLoading) return <Loader />;
 
     return (
-        <div className="form-container">
+        <div>
             <h1>Update Profile</h1>
 
             <form onSubmit={submitHandler}>
-                <div className='my-2' id='name'>
+                <div id='name'>
                     <label>Name</label>
                     <input
                         type='name'
                         placeholder='Enter name'
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="form-control"
                     />
                 </div>
-                <div className='my-2' id='email'>
+                <div id='email'>
                     <label>Email Address</label>
                     <input
                         type='email'
                         placeholder='Enter email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="form-control"
                     />
                 </div>
-                <div className='my-2' id='password'>
+                <div id='password'>
                     <label>Password</label>
                     <input
                         type='password'
                         placeholder='Enter password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="form-control"
                     />
                 </div>
 
-                <div className='my-2' id='confirmPassword'>
+                <div id='confirmPassword'>
                     <label>Confirm Password</label>
                     <input
                         type='password'
                         placeholder='Confirm password'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="form-control"
                     />
                 </div>
 
-                <button type='submit' className='submit-button mt-3'>
+                <button type='submit'>
                     Update
                 </button>
             </form>

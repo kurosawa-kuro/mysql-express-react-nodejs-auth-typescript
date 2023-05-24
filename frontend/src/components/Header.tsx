@@ -27,26 +27,26 @@ const Header = () => {
     };
 
     return (
-        <header className="navbar">
-            <div className="navbar-container">
-                <div className="navbar-brand">
-                    <Link className="navbar-item" to={`/`}>MERN Auth</Link>
+        <header>
+            <div>
+                <div>
+                    <Link to={`/`}>MERN Auth</Link>
                 </div>
-                <div className="navbar-menu">
+                <div>
                     {user ? (
                         <>
-                            <div className="navbar-dropdown">
-                                <button className="navbar-item">{user.name}</button>
-                                <div className="navbar-dropdown-menu">
-                                    <Link to="/profile" className="navbar-item">Profile</Link>
-                                    <button onClick={logoutHandler} className="navbar-item">Logout</button>
+                            <div>
+                                <button>{user.name}</button>
+                                <div>
+                                    <Link to="/profile">Profile</Link>
+                                    <button onClick={logoutHandler}>Logout</button>
                                 </div>
                             </div>
                         </>
                     ) : (
                         <>
-                            <Link className="navbar-item" to={`/login`}>Sign In</Link>
-                            <Link className="navbar-item" to={`/register`}>Sign Up</Link>
+                            <Link to={`/login`}>Sign In</Link>
+                            <Link to={`/register`}>Sign Up</Link>
                         </>
                     )}
                 </div>

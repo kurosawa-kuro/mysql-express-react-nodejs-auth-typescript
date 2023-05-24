@@ -19,11 +19,11 @@ const LoginScreen = () => {
 
     // Component JSX
     return (
-        <div className="form-container">
+        <div>
             <h1>Sign In</h1>
 
             <form onSubmit={submitHandler}>
-                <div className='my-2' id='email'>
+                <div id='email'>
                     <label>Email Address</label>
                     <input
                         type='email'
@@ -33,7 +33,7 @@ const LoginScreen = () => {
                     />
                 </div>
 
-                <div className='my-2' id='password'>
+                <div id='password'>
                     <label>Password</label>
                     <input
                         type='password'
@@ -46,7 +46,6 @@ const LoginScreen = () => {
                 <button
                     disabled={loginUserApiMutation.isLoading}
                     type='submit'
-                    className='register-button mt-3'
                 >
                     Sign In
                 </button>
@@ -54,7 +53,7 @@ const LoginScreen = () => {
 
             {loginUserApiMutation.isLoading && <Loader />}
 
-            <div className='py-3'>
+            <div>
                 New Customer? <Link to='/register'>Register</Link>
             </div>
         </div>
