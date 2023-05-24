@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { MemoryRouter as Router } from 'react-router-dom';
 import LoginScreen from '../screens/auth/LoginScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
