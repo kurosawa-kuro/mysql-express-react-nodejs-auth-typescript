@@ -6,27 +6,32 @@ const Debug = () => {
     const { user } = useUserStore();
     const { flashMessage } = useFlashMessageStore();
     return (
-        <div style={{ 'backgroundColor': '#f0808038' }}>
-            {user ? (
-                <div style={{ 'display': 'flex', 'gap': '10px' }}>
-                    <div>user</div>
-                    <div>
-                        {Object.entries(user).map(([key, value]) => (
-                            <p key={key}>{`${key}: ${value}`}</p>
-                        ))}
+        <div className="flex justify-start bg-yellow-100 p-4 pl-16 gap-4 rounded-lg items-start">
+            <>
+                <div className="font-bold">user</div>
+                {user ? (
+                    <div className="flex flex-col gap-4 border-r-2 border-gray-300 pr-8 mr-8">
+                        <div>
+                            {Object.entries(user).map(([key, value]) => (
+                                <p key={key} className="break-words">{`${key}: ${value}`}</p>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            ) : (
-                <p>user null</p>
-            )}
+                ) : (
+                    <p className="mr-8 border-r-2 border-gray-300 pr-8">user null</p>
+                )}
+            </>
 
-            {flashMessage ? (
-                <div>
-                    {flashMessage}
-                </div>
-            ) : (
-                <p>flashMessage null</p>
-            )}
+            <>
+                <div className="font-bold">flashMessage</div>
+                {flashMessage ? (
+                    <p>
+                        {flashMessage}
+                    </p>
+                ) : (
+                    <p>flashMessage null</p>
+                )}
+            </>
         </div>
     )
 }
