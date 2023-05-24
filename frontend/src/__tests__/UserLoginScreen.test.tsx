@@ -3,23 +3,20 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import LoginScreen from '../screens/auth/LoginScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-// Create a mock of useLoginUserHook
 const mockSetEmail = jest.fn();
 const mockSetPassword = jest.fn();
 const mockSubmitHandler = jest.fn();
 
-jest.mock('../hooks/auth/useLoginUserHook', () => ({
-    useLoginUserHook: () => ({
-        mutation: { isLoading: false },
-        submitHandler: mockSubmitHandler,
-        email: '',
-        setEmail: mockSetEmail,
-        password: '',
-        setPassword: mockSetPassword,
-    }),
-}));
+// Create a standalone mock function
+let mockUseLoginUserHook = jest.fn();
 
-// Create a mock of react-query useMutation
+jest.mock('../hooks/auth/useLoginUserHook', () => {
+    return {
+        ...jest.requireActual('../hooks/auth/useLoginUserHook'),
+        useLoginUserHook: () => mockUseLoginUserHook(),
+    };
+});
+
 jest.mock('@tanstack/react-query', () => {
     const actualReactQuery = jest.requireActual('@tanstack/react-query');
     return {
@@ -31,8 +28,19 @@ jest.mock('@tanstack/react-query', () => {
     };
 });
 
-// Create a client
 const queryClient = new QueryClient();
+
+beforeEach(() => {
+    jest.clearAllMocks();
+    mockUseLoginUserHook = jest.fn().mockReturnValue({
+        mutation: { isLoading: false },
+        submitHandler: mockSubmitHandler,
+        email: '',
+        setEmail: mockSetEmail,
+        password: '',
+        setPassword: mockSetPassword,
+    });
+});
 
 test('renders LoginScreen with Sign In h1 header and input fields', () => {
     render(
@@ -87,3 +95,23 @@ test('calls submitHandler on form submission', () => {
     expect(mockSubmitHandler).toHaveBeenCalled();
 });
 
+test('renders Loader when API call is loading', () => {
+    mockUseLoginUserHook.mockReturnValue({
+        mutation: { isLoading: true },
+        submitHandler: mockSubmitHandler,
+        email: '',
+        setEmail: mockSetEmail,
+        password: '',
+        setPassword: mockSetPassword,
+    });
+
+    render(
+        <QueryClientProvider client={queryClient}>
+            <Router>
+                <LoginScreen />
+            </Router>
+        </QueryClientProvider>
+    );
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+});
