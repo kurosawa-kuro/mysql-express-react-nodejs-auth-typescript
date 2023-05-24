@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useFlashMessageStore } from '../state/store.js';
+import { useFlashMessageStore } from '../state/store';
 
 export const useFlashMessageHook = () => {
     const { flashMessage, setFlashMessage } = useFlashMessageStore();
