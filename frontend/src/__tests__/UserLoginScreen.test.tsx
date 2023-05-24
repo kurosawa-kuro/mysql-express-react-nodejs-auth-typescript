@@ -6,18 +6,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Create a mock of useLoginUserHook
 const mockSetEmail = jest.fn();
 const mockSetPassword = jest.fn();
+const mockSubmitHandler = jest.fn();
 
 jest.mock('../hooks/auth/useLoginUserHook', () => ({
     useLoginUserHook: () => ({
         mutation: { isLoading: false },
-        submitHandler: jest.fn(),
+        submitHandler: mockSubmitHandler,
         email: '',
         setEmail: mockSetEmail,
         password: '',
         setPassword: mockSetPassword,
     }),
 }));
-
 
 // Create a mock of react-query useMutation
 jest.mock('@tanstack/react-query', () => {
@@ -72,4 +72,18 @@ test('updates email and password values on input change', () => {
     expect(mockSetPassword).toHaveBeenCalledWith('password123');
 });
 
-// Add more test cases as needed
+test('calls submitHandler on form submission', () => {
+    render(
+        <QueryClientProvider client={queryClient}>
+            <Router>
+                <LoginScreen />
+            </Router>
+        </QueryClientProvider>
+    );
+
+    const form = screen.getByRole('form');
+    fireEvent.submit(form);
+
+    expect(mockSubmitHandler).toHaveBeenCalled();
+});
+
