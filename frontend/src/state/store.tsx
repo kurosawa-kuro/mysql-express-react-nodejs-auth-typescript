@@ -12,8 +12,8 @@ interface UserStore {
 };
 
 interface FlashMessageStore {
-    flashMessage: string;
-    setFlashMessage: (message: string) => void;
+    flashMessage: string | null;
+    setFlashMessage: (message: string | null) => void;
 };
 
 const useUserStore = create<UserStore>(set => {
@@ -31,7 +31,7 @@ const useUserStore = create<UserStore>(set => {
 
 const useFlashMessageStore = create<FlashMessageStore>(set => ({
     flashMessage: '',
-    setFlashMessage: (message: string) => set({ flashMessage: message }),
+    setFlashMessage: (message: string | null) => set({ flashMessage: message }),
 }));
 
 export { useUserStore, useFlashMessageStore }

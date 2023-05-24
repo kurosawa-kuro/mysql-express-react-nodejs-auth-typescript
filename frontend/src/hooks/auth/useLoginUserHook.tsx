@@ -31,7 +31,7 @@ export const useLoginUserHook = () => {
 
     // Global State
     const { setUser } = useUserStore();
-    // const { setFlashMessage } = useFlashMessageStore();
+    const { setFlashMessage } = useFlashMessageStore();
 
     // API mutation
     const loginUserApiMutation = useMutation(
@@ -43,7 +43,7 @@ export const useLoginUserHook = () => {
             // On success
             onSuccess: (user) => {
                 setUser(user);
-                // setFlashMessage("User login successful!");
+                setFlashMessage("User login successful!");
                 navigate('/');
             },
             // On error
