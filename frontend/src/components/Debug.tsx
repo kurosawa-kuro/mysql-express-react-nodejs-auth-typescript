@@ -5,7 +5,7 @@ const Debug = () => {
     const { user } = useUserStore();
     const { flashMessage } = useFlashMessageStore();
     return (
-        <div>
+        <div style={{ 'backgroundColor': '#f0808038' }}>
             {user ? (
                 <div style={{ 'display': 'flex', 'gap': '10px' }}>
                     <div>user</div>
