@@ -5,8 +5,8 @@ import { useUserStore } from '../state/store';
 import { logoutUserApi } from '../services/api';
 
 const Header = () => {
-    const { user, setUser } = useUserStore();
     const navigate = useNavigate();
+    const { user, setUser } = useUserStore();
     const [showDropdown, setShowDropdown] = useState(false);
 
     const logoutMutation = useMutation(
