@@ -18,7 +18,7 @@ const Debug = () => {
                         </div>
                     </div>
                 ) : (
-                    <p>user null</p>
+                    <p>null</p>
                 )}
             </>
 
@@ -27,7 +27,7 @@ const Debug = () => {
                 {flashMessage ? (
                     <p>{flashMessage}</p>
                 ) : (
-                    <p>flashMessage null</p>
+                    <p>null</p>
                 )}
             </>
         </div>
