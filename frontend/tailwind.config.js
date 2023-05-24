@@ -1,8 +1,5 @@
-import { defineConfig } from 'tailwindcss'
-
-export default defineConfig({
-  mode: 'jit',
-  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+module.exports = {
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
@@ -11,4 +8,4 @@ export default defineConfig({
     extend: {},
   },
   plugins: [],
-})
+}
