@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import LoginScreen from '../screens/auth/LoginScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -115,3 +116,39 @@ test('renders Loader when API call is loading', () => {
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
 });
+
+// test('redirects to home screen after successful login', async () => {
+//     // Setup a history object
+//     const history = createMemoryHistory();
+
+//     mockUseLoginUserHook = jest.fn().mockReturnValue({
+//         mutation: { isLoading: false, isSuccess: true },
+//         submitHandler: () => history.push('/'),
+//         email: '',
+//         setEmail: mockSetEmail,
+//         password: '',
+//         setPassword: mockSetPassword,
+//     });
+
+//     render(
+//         <QueryClientProvider client={queryClient}>
+//             <Router history={history}>
+//                 <LoginScreen />
+//             </Router>
+//         </QueryClientProvider>
+//     );
+
+//     // Fill out the form
+//     fireEvent.change(screen.getByPlaceholderText('Enter email'), {
+//         target: { value: 'test@example.com' },
+//     });
+//     fireEvent.change(screen.getByPlaceholderText('Enter password'), {
+//         target: { value: 'password123' },
+//     });
+
+//     // Submit the form
+//     fireEvent.click(screen.getByRole('button', { name: /Sign In/i }));
+
+//     // Expect to be redirected to home
+//     expect(history.location.pathname).toBe('/');
+// });
