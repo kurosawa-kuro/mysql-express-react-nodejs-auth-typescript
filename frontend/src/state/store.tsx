@@ -1,24 +1,28 @@
-// frontend\src\state\store.tsx
+import { create } from 'zustand'
 
-type UserStore = {
-    user: any | null;
-    setUser: (user: any) => void;
+interface User {
+    id: number;
+    name: string;
+    email: string;
+}
+
+interface UserStore {
+    user: User | null;
+    setUser: (user: User | null) => void;
 };
 
-type FlashMessageStore = {
+interface FlashMessageStore {
     flashMessage: string;
     setFlashMessage: (message: string) => void;
 };
 
-import { create } from 'zustand'
-
 const useUserStore = create<UserStore>(set => {
     const userItem = localStorage.getItem('user');
-    const user = userItem ? JSON.parse(userItem) : null;
+    const user = userItem ? JSON.parse(userItem) as User : null;
 
     return {
         user,
-        setUser: (user: any) => {
+        setUser: (user: User | null) => {
             localStorage.setItem('user', JSON.stringify(user));
             set({ user });
         },
@@ -29,7 +33,5 @@ const useFlashMessageStore = create<FlashMessageStore>(set => ({
     flashMessage: '',
     setFlashMessage: (message: string) => set({ flashMessage: message }),
 }));
-
-
 
 export { useUserStore, useFlashMessageStore }
