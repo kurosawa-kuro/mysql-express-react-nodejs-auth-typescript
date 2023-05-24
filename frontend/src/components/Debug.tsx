@@ -25,15 +25,13 @@ const Debug = () => {
             <>
                 <div className="font-bold">flashMessage</div>
                 {flashMessage ? (
-                    <p>
-                        {flashMessage}
-                    </p>
+                    <p>{flashMessage}</p>
                 ) : (
                     <p>flashMessage null</p>
                 )}
             </>
         </div>
-    )
-}
+    );
+};
 
-export default Debug
+export default Debug;
