@@ -3,6 +3,8 @@
 // Importing React Hooks
 import { useState } from 'react';
 
+import { AxiosError } from 'axios';
+
 // Importing react-query Hooks
 import { useMutation } from '@tanstack/react-query';
 
@@ -16,7 +18,7 @@ import { toast } from 'react-toastify';
 import { useUserStore, useFlashMessageStore } from '../../state/store';
 
 // Importing API service
-import { loginUserApi } from '../../services/api';
+import { loginUserApi, ApiError } from '../../services/api';
 
 /**
  * Custom hook for handling user login
@@ -47,8 +49,8 @@ export const useLoginUserHook = () => {
                 navigate('/');
             },
             // On error
-            onError: (error) => {
-                // toast.error(error?.response?.data?.message || error.message);
+            onError: (error: AxiosError<ApiError>) => {
+                toast.error(error?.response?.data?.message || error.message);
             },
         }
     );
@@ -69,3 +71,4 @@ export const useLoginUserHook = () => {
         setPassword
     }
 }
+

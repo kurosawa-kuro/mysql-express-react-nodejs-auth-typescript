@@ -1,5 +1,6 @@
 // frontend\src\services\api.tsx
 
+import { AxiosError } from 'axios';
 import { getApiClient } from './apiClient.js';
 
 const apiClient = getApiClient();
@@ -32,6 +33,10 @@ export interface UserWithoutPassword {
 export interface UserUpdateDataFrontend {
     name: string;
     email: string;
+}
+
+export interface ApiError extends AxiosError {
+    message: string;
 }
 
 export const registerUserApi = async (user: FullUser) => {
