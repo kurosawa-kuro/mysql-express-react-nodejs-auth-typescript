@@ -10,7 +10,7 @@ const App = () => {
     <>
       <Header />
       <ToastContainer />
-      <div className='container'>
+      <div className='mx-auto px-4'>
         <Outlet />
       </div>
       <Debug />
