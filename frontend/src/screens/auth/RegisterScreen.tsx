@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 // Internal Modules
 import { useRegisterUserHook } from '../../hooks/auth/useRegisterUserHook';
-// import { Loader } from '../../components/Loader';
+import { Loader } from '../../components/Loader';
 
 const RegisterScreen = () => {
     // Custom Hook
@@ -71,7 +71,7 @@ const RegisterScreen = () => {
                     Register
                 </button>
 
-                {/* {registerUserMutation.isLoading && <Loader />} */}
+                {registerUserMutation.isLoading && <Loader />}
             </form>
 
             <div className='py-3'>

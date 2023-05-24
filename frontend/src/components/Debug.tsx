@@ -1,4 +1,5 @@
-import React from 'react'
+// frontend\src\components\Debug.tsx
+
 import { useUserStore, useFlashMessageStore } from '../state/store';
 
 const Debug = () => {

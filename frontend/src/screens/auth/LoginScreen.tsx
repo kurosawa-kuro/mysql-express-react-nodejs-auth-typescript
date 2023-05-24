@@ -2,7 +2,7 @@
 
 // External Packages
 import { Link } from 'react-router-dom';
-// import { Loader } from '../../components/Loader';
+import { Loader } from '../../components/Loader';
 
 // Internal Modules
 import { useLoginUserHook } from '../../hooks/auth/useLoginUserHook';
@@ -52,7 +52,7 @@ const LoginScreen = () => {
                 </button>
             </form>
 
-            {/* {loginUserApiMutation.isLoading && <Loader />} */}
+            {loginUserApiMutation.isLoading && <Loader />}
 
             <div className='py-3'>
                 New Customer? <Link to='/register'>Register</Link>
