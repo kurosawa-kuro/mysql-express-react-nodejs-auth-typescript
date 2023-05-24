@@ -1,3 +1,5 @@
+// frontend\src\__tests__\HomeScreen.test.tsx
+
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import HomeScreen from '../screens/HomeScreen';

@@ -1,7 +1,7 @@
 // frontend\src\services\api.tsx
 
 import { AxiosError } from 'axios';
-import { getApiClient } from './apiClient.js';
+import { getApiClient } from './apiClient';
 
 const apiClient = getApiClient();
 
