@@ -18,7 +18,7 @@ const Debug = () => {
                         </div>
                     </div>
                 ) : (
-                    <p className="mr-8 border-r-2 border-gray-300 pr-8">user null</p>
+                    <p>user null</p>
                 )}
             </>
 
