@@ -68,7 +68,7 @@ const useUpdateUserHook = () => {
     // API Mutation
     const updateUserMutation = useMutation<UserWithoutPassword, Error, UserUpdateDataFrontend>(
         async ({ name, email }) => {
-            const updatedUser = await updateUserProfileApi({ name, email, password });
+            const updatedUser = await updateUserProfileApi({ name, email });
             return updatedUser;
         },
         {
