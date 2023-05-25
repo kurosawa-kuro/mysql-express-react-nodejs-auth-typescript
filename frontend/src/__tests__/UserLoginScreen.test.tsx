@@ -30,6 +30,8 @@ jest.mock('@tanstack/react-query', () => {
     };
 });
 
+
+
 jest.mock('../services/api', () => ({
     ...jest.requireActual('../services/api'),
     loginUserApi: jest.fn().mockResolvedValue({
@@ -92,4 +94,37 @@ test('calls handleFormSubmit on form submission', () => {
     fireEvent.submit(form);
 
     expect(mockSubmitHandler).toHaveBeenCalled();
+});
+
+
+test('calls handleFormSubmit on form submission and verifies loginUserApi response', async () => {
+    // loginUserApiのモックを作成して成功のレスポンスを定義
+    const mockLoginUserApi = jest.fn().mockResolvedValue({
+        user: {
+            id: '123',
+            name: 'Test User',
+            email: 'test@example.com',
+        },
+    });
+    jest.mock('../services/api', () => ({
+        ...jest.requireActual('../services/api'),
+        loginUserApi: mockLoginUserApi,
+    }));
+
+    render(
+        <QueryClientProvider client={queryClient}>
+            <Router>
+                <LoginScreen />
+            </Router>
+        </QueryClientProvider>
+    );
+
+    const form = screen.getByRole('form');
+    fireEvent.submit(form);
+
+    expect(mockSubmitHandler).toHaveBeenCalled();
+    expect(mockLoginUserApi).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'password123',
+    });
 });
