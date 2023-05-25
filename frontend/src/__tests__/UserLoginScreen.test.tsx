@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import LoginScreen from '../screens/auth/LoginScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import LoginScreen from '../screens/auth/LoginScreen';
 
 const mockSetEmail = jest.fn();
 const mockSetPassword = jest.fn();
@@ -60,7 +60,6 @@ beforeEach(() => {
     window.HTMLFormElement.prototype.requestSubmit = () => { };
 });
 
-
 test('updates email and password values on input change', () => {
     render(
         <QueryClientProvider client={queryClient}>
@@ -94,5 +93,3 @@ test('calls handleFormSubmit on form submission', () => {
 
     expect(mockSubmitHandler).toHaveBeenCalled();
 });
-
-
