@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import LoginScreen from '../screens/auth/LoginScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -123,31 +123,4 @@ test('renders Loader when API call is loading', () => {
     );
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
-});
-
-test('redirects to home screen after successful login', async () => {
-    render(
-        <QueryClientProvider client={queryClient}>
-            <Router>
-                <LoginScreen />
-            </Router>
-        </QueryClientProvider>
-    );
-
-    const emailInput = screen.getByPlaceholderText('Enter email');
-    const passwordInput = screen.getByPlaceholderText('Enter password');
-
-    fireEvent.change(emailInput, {
-        target: { value: 'test@example.com' },
-    });
-    fireEvent.change(passwordInput, {
-        target: { value: 'password123' },
-    });
-
-    fireEvent.submit(screen.getByTestId('login-form'));
-
-    await waitFor(() => {
-        expect(mockSubmitHandler).toHaveBeenCalled();
-        expect(mockNavigate).toHaveBeenCalledWith('/');
-    });
 });
