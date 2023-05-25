@@ -1,7 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import LoginScreen from '../screens/auth/LoginScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const mockSetEmail = jest.fn();
 const mockSetPassword = jest.fn();
@@ -14,6 +15,7 @@ jest.mock('../hooks/auth/useLoginUserHook', () => {
     return {
         ...jest.requireActual('../hooks/auth/useLoginUserHook'),
         useLoginUserHook: () => mockUseLoginUserHook(),
+        submitHandler: mockSubmitHandler,
     };
 });
 
@@ -28,10 +30,16 @@ jest.mock('@tanstack/react-query', () => {
     };
 });
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: jest.fn(),
+}));
+
 const queryClient = new QueryClient();
 
 beforeEach(() => {
     jest.clearAllMocks();
+    window.HTMLFormElement.prototype.requestSubmit = () => { };
     mockUseLoginUserHook = jest.fn().mockReturnValue({
         mutation: { isLoading: false },
         submitHandler: mockSubmitHandler,
@@ -116,38 +124,40 @@ test('renders Loader when API call is loading', () => {
     expect(screen.getByTestId('loader')).toBeInTheDocument();
 });
 
-// test('redirects to home screen after successful login', async () => {
-//     // Setup a history object
-//     const history = createMemoryHistory();
+test('redirects to home screen after successful login', async () => {
+    const navigate = jest.fn();
 
-//     mockUseLoginUserHook = jest.fn().mockReturnValue({
-//         mutation: { isLoading: false, isSuccess: true },
-//         submitHandler: () => history.push('/'),
-//         email: '',
-//         setEmail: mockSetEmail,
-//         password: '',
-//         setPassword: mockSetPassword,
-//     });
+    (useNavigate as jest.Mock).mockReturnValue(navigate);
 
-//     render(
-//         <QueryClientProvider client={queryClient}>
-//             <Router history={history}>
-//                 <LoginScreen />
-//             </Router>
-//         </QueryClientProvider>
-//     );
+    mockUseLoginUserHook = jest.fn().mockReturnValue({
+        mutation: { isLoading: false, isSuccess: true },
+        submitHandler: navigate,
+        email: '',
+        setEmail: mockSetEmail,
+        password: '',
+        setPassword: mockSetPassword,
+    });
 
-//     // Fill out the form
-//     fireEvent.change(screen.getByPlaceholderText('Enter email'), {
-//         target: { value: 'test@example.com' },
-//     });
-//     fireEvent.change(screen.getByPlaceholderText('Enter password'), {
-//         target: { value: 'password123' },
-//     });
+    render(
+        <QueryClientProvider client={queryClient}>
+            <Router>
+                <LoginScreen />
+            </Router>
+        </QueryClientProvider>
+    );
 
-//     // Submit the form
-//     fireEvent.click(screen.getByRole('button', { name: /Sign In/i }));
+    // Fill out the form
+    fireEvent.change(screen.getByPlaceholderText('Enter email'), {
+        target: { value: 'test@example.com' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter password'), {
+        target: { value: 'password123' },
+    });
 
-//     // Expect to be redirected to home
-//     expect(history.location.pathname).toBe('/');
-// });
+    // Submit the form
+    fireEvent.submit(screen.getByTestId('login-form'));
+    // fireEvent.click(screen.getByRole('button', { name: /Sign In/i }));
+
+    // Expect to be redirected to home
+    expect(navigate).toHaveBeenCalledWith('/');
+});

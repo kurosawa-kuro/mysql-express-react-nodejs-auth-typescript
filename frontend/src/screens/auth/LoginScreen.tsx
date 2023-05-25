@@ -22,7 +22,7 @@ const LoginScreen = () => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <h1 className="text-3xl font-bold mb-4">Sign In</h1>
 
-            <form onSubmit={submitHandler} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" role="form">
+            <form data-testid="login-form" onSubmit={submitHandler} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" role="form">
                 <div className="mb-4">
                     <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
                         Email Address
