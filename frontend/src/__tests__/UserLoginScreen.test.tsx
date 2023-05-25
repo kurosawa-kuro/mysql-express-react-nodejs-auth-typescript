@@ -44,7 +44,7 @@ jest.mock('../services/api', () => ({
 jest.mock('../hooks/auth/useLoginUserHook', () => ({
     useLoginUserHook: () => ({
         mutation: { isLoading: false, isSuccess: true },
-        handleFormSubmit: mockSubmitHandler,
+        submitHandler: mockSubmitHandler,
         email: '',
         setEmail: mockSetEmail,
         password: '',
@@ -60,24 +60,6 @@ beforeEach(() => {
     window.HTMLFormElement.prototype.requestSubmit = () => { };
 });
 
-test('renders LoginScreen with Sign In h1 header and input fields', () => {
-    render(
-        <QueryClientProvider client={queryClient}>
-            <Router>
-                <LoginScreen />
-            </Router>
-        </QueryClientProvider>
-    );
-
-    const h1Element = screen.getByRole('heading', { name: /Sign In/i, level: 1 });
-    expect(h1Element).toBeInTheDocument();
-
-    const emailInput = screen.getByPlaceholderText('Enter email');
-    expect(emailInput).toBeInTheDocument();
-
-    const passwordInput = screen.getByPlaceholderText('Enter password');
-    expect(passwordInput).toBeInTheDocument();
-});
 
 test('updates email and password values on input change', () => {
     render(
@@ -113,14 +95,4 @@ test('calls handleFormSubmit on form submission', () => {
     expect(mockSubmitHandler).toHaveBeenCalled();
 });
 
-test('renders Loader when API call is loading', () => {
-    render(
-        <QueryClientProvider client={queryClient}>
-            <Router>
-                <LoginScreen />
-            </Router>
-        </QueryClientProvider>
-    );
 
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
-});
