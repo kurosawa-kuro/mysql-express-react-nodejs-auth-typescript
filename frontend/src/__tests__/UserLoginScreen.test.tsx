@@ -1,9 +1,33 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import TestApp from '../TestApp';
+import { MemoryRouter, useRoutes } from 'react-router-dom';
 import { loginUserApi } from '../services/api';
+import HomeScreen from '../screens/HomeScreen';
+import LoginScreen from '../screens/auth/LoginScreen';
+import App from '../App';
 
 jest.mock('../services/api');
+
+const user = {
+    id: 1,
+    email: 'test@example.com',
+    name: 'Test User',
+    isAdmin: false,
+};
+
+const AppWrapper = () => {
+    let routes = useRoutes([
+        {
+            path: '/',
+            element: <App />,
+            children: [
+                { index: true, element: <HomeScreen /> },
+                { path: 'login', element: <LoginScreen /> },
+            ],
+        },
+    ]);
+
+    return routes;
+};
 
 test('ログイン成功後にHome画面とHeaderコンポーネントが表示されることを確認', async () => {
     const mockLoginUserApi = loginUserApi as jest.MockedFunction<typeof loginUserApi>;
@@ -11,17 +35,11 @@ test('ログイン成功後にHome画面とHeaderコンポーネントが表示�
     const email = 'test@example.com';
     const password = 'password';
 
-    const user = {
-        id: 1,
-        email: 'test@example.com',
-        name: 'Test User',
-        isAdmin: false,
-    };
     mockLoginUserApi.mockResolvedValue(user);
 
     render(
         <MemoryRouter initialEntries={['/login']}>
-            <TestApp />
+            <AppWrapper />
         </MemoryRouter>
     );
 
