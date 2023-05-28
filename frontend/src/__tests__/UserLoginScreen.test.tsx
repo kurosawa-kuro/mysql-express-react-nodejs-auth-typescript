@@ -43,6 +43,7 @@ test('ログイン成功後にHome画面とHeaderコンポーネントが表示�
     await waitFor(() => {
         expect(screen.getByText('MERN Authentication')).toBeInTheDocument();
         expect(screen.getByText('MERN Auth Header')).toBeInTheDocument();
+        expect(screen.getByText(user.name)).toBeInTheDocument();
     });
 
     // デバッグ情報を表示
