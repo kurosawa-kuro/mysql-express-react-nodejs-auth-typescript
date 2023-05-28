@@ -1,74 +1,43 @@
-// frontend\src\hooks\auth\useLoginUserHook.js
+// frontend\src\hooks\auth\useLoginUserHook.tsx
 
-// Importing React Hooks
 import { useState } from 'react';
-
-import { AxiosError } from 'axios';
-
-// Importing react-query Hooks
-import { useMutation } from '@tanstack/react-query';
-
-// Importing Navigation Hooks
 import { useNavigate } from 'react-router-dom';
-
-// Importing notification library
 import { toast } from 'react-toastify';
-
-// Importing Custom Hooks
+import { loginUserApi, ApiError } from '../../services/api';
 import { useUserStore, useFlashMessageStore } from '../../state/store';
 
-// Importing API service
-import { loginUserApi, ApiError } from '../../services/api';
-
-/**
- * Custom hook for handling user login
- */
-export const useLoginUserHook = () => {
-    // Navigation
-    const navigate = useNavigate();
-
-    // Local State
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    // Global State
+const useLoginUserHook = () => {
     const { setUser } = useUserStore();
     const { setFlashMessage } = useFlashMessageStore();
+    const navigate = useNavigate();
 
-    // API mutation
-    const loginUserApiMutation = useMutation(
-        async () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const loginUser = async (email: string, password: string) => {
+        setIsLoading(true);
+
+        try {
             const user = await loginUserApi({ email, password });
-            return user;
-        },
-        {
-            // On success
-            onSuccess: (user) => {
-                setUser(user);
-                setFlashMessage("User login successful!");
-                navigate('/');
-            },
-            // On error
-            onError: (error: AxiosError<ApiError>) => {
-                toast.error(error?.response?.data?.message || error.message);
-            },
+            setUser(user);
+            setFlashMessage('User login successful!');
+            navigate('/');
+        } catch (err: ApiError | any) {
+            toast.error(err?.response?.data?.message || err.message);
+        } finally {
+            setIsLoading(false);
         }
-    );
-
-    // Form submit handler
-    const submitHandler = (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        loginUserApiMutation.mutate();
     };
 
-    // Return the values from the hook
     return {
-        mutation: loginUserApiMutation,
-        submitHandler,
         email,
         setEmail,
         password,
-        setPassword
-    }
-}
+        setPassword,
+        isLoading,
+        loginUser,
+    };
+};
 
+export default useLoginUserHook;

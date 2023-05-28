@@ -25,6 +25,7 @@ test('ログイン成功後にHome画面とHeaderコンポーネントが表示�
         </MemoryRouter>
     );
 
+    // ログインフォームの入力と送信
     const emailInput = screen.getByPlaceholderText('Enter email');
     const passwordInput = screen.getByPlaceholderText('Enter password');
     const submitButton = screen.getByTestId('login-form');
@@ -33,15 +34,17 @@ test('ログイン成功後にHome画面とHeaderコンポーネントが表示�
     fireEvent.change(passwordInput, { target: { value: password } });
     fireEvent.submit(submitButton);
 
+    // loginUserApiが正しく呼び出されたことを検証
     await waitFor(() => {
         expect(mockLoginUserApi).toHaveBeenCalledWith({ email, password });
     });
 
-    // Home画面が表示されるまで待つ
+    // Home画面とHeaderコンポーネントが表示されるまで待つ
     await waitFor(() => {
         expect(screen.getByText('MERN Authentication')).toBeInTheDocument();
         expect(screen.getByText('MERN Auth Header')).toBeInTheDocument();
     });
 
-    screen.debug();
+    // デバッグ情報を表示
+    // screen.debug();
 });
