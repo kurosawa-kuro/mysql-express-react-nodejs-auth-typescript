@@ -39,7 +39,7 @@ test('ログイン成功後にHome画面とHeaderコンポーネントが表示�
         expect(mockLoginUserApi).toHaveBeenCalledWith({ email, password });
     });
 
-    // Home画面とHeaderコンポーネントが表示されるまで待つ
+    // Home画面とHeaderコンポーネント,user.nameが表示されるまで待つ
     await waitFor(() => {
         expect(screen.getByText('MERN Authentication')).toBeInTheDocument();
         expect(screen.getByText('MERN Auth Header')).toBeInTheDocument();
