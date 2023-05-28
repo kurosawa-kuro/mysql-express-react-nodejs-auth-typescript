@@ -22,7 +22,7 @@ const Header = () => {
     return (
         <header className="flex items-center justify-between p-5 bg-blue-500 text-white">
             <div>
-                <Link to={`/`} className="text-white font-bold">MERN Auth Header</Link>
+                <Link to={`/`} className="text-white font-bold">MERN Auth App</Link>
             </div>
             <div>
                 {user ? (

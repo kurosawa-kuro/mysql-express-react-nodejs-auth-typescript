@@ -59,11 +59,11 @@ test('ログイン成功後にHome画面とHeaderコンポーネントが表示�
 
     // Home画面とHeaderコンポーネント,user.nameが表示されるまで待つ
     await waitFor(() => {
-        expect(screen.getByText('MERN Authentication')).toBeInTheDocument();
-        expect(screen.getByText('MERN Auth Header')).toBeInTheDocument();
+        expect(screen.getByText('Home')).toBeInTheDocument();
+        expect(screen.getByText('MERN Auth App')).toBeInTheDocument();
         expect(screen.getByText(user.name)).toBeInTheDocument();
     });
 
     // デバッグ情報を表示
-    // screen.debug();
+    screen.debug();
 });
