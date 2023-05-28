@@ -4,8 +4,6 @@
 import { Link } from 'react-router-dom';
 import { Loader } from '../../components/Loader';
 import { useState } from 'react';
-import { AxiosError } from 'axios';
-import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useUserStore, useFlashMessageStore } from '../../state/store';
@@ -18,35 +16,27 @@ const LoginScreen = () => {
     // Local State
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     // Global State
     const { setUser } = useUserStore();
     const { setFlashMessage } = useFlashMessageStore();
 
-    // API mutation
-    const loginUserApiMutation = useMutation(
-        async () => {
-            const user = await loginUserApi({ email, password });
-            return user;
-        },
-        {
-            // On success
-            onSuccess: (user) => {
-                setUser(user);
-                setFlashMessage("User login successful!");
-                navigate('/');
-            },
-            // On error
-            onError: (error: AxiosError<ApiError>) => {
-                toast.error(error?.response?.data?.message || error.message);
-            },
-        }
-    );
-
     // Form submit handler
-    const submitHandler = (e: { preventDefault: () => void; }) => {
+    const submitHandler = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        loginUserApiMutation.mutate();
+        setIsLoading(true);
+
+        try {
+            const user = await loginUserApi({ email, password });
+            setUser(user);
+            setFlashMessage("User login successful!");
+            navigate('/');
+        } catch (err: ApiError | any) {
+            toast.error(err?.response?.data?.message || err.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -83,7 +73,7 @@ const LoginScreen = () => {
                 </div>
 
                 <button
-                    disabled={loginUserApiMutation.isLoading}
+                    disabled={isLoading}
                     type='submit'
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
@@ -91,7 +81,7 @@ const LoginScreen = () => {
                 </button>
             </form>
 
-            {loginUserApiMutation.isLoading && <Loader />}
+            {isLoading && <Loader />}
 
             <div>
                 New Customer? <Link to='/register' className="text-blue-500">Register</Link>
