@@ -46,7 +46,7 @@ const Header = () => {
                     </div>
                 ) : (
                     <div>
-                        <Link to={`/login`} className="mr-4 text-white hover:underline">Sign In</Link>
+                        <Link to={`/login`} className="mr-4 text-white hover:underline">Log in</Link>
                         <Link to={`/register`} className="text-white hover:underline">Sign Up</Link>
                     </div>
                 )}
