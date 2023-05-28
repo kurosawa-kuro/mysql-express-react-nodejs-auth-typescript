@@ -6,4 +6,7 @@ module.exports = {
     },
     setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'], //jest-domの機能を利用するための設定
     testEnvironment: 'jsdom', //DOM API (document, window) を使うための設定
+    moduleNameMapper: {
+        '\\.(css|less)$': '<rootDir>/__mocks__/styleMock.js',
+    },
 };

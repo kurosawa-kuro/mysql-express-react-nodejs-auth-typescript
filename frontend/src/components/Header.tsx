@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
 import { useUserStore } from '../state/store';
 import { logoutUserApi } from '../services/api';
 
@@ -9,29 +8,21 @@ const Header = () => {
     const { user, setUser } = useUserStore();
     const [showDropdown, setShowDropdown] = useState(false);
 
-    const logoutMutation = useMutation(
-        async () => {
+    const logoutHandler = async () => {
+        try {
             await logoutUserApi();
-        },
-        {
-            onSuccess: () => {
-                setUser(null);
-                navigate('/login');
-            },
-            onError: (err) => {
-                console.error(err);
-            },
+            setUser(null);
+            navigate('/login');
+        } catch (err) {
+            console.error(err);
+        } finally {
         }
-    );
-
-    const logoutHandler = () => {
-        logoutMutation.mutate();
     };
 
     return (
         <header className="flex items-center justify-between p-5 bg-blue-500 text-white">
             <div>
-                <Link to={`/`} className="text-white font-bold">MERN Auth</Link>
+                <Link to={`/`} className="text-white font-bold">MERN Auth Header</Link>
             </div>
             <div>
                 {user ? (
