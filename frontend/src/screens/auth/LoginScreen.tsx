@@ -1,18 +1,17 @@
-// frontend\src\screens\LoginScreen.jsx
-
-// External Packages
-import { Link } from 'react-router-dom';
-import { Loader } from '../../components/Loader';
+// React Packages
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+// External Packages
 import { toast } from 'react-toastify';
+
+// Project Internal Imports
+import { Loader } from '../../components/Loader';
 import { useUserStore, useFlashMessageStore } from '../../state/store';
 import { loginUserApi, ApiError } from '../../services/api';
 
 const LoginScreen = () => {
-    // Navigation
-    const navigate = useNavigate();
-
     // Local State
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,6 +20,9 @@ const LoginScreen = () => {
     // Global State
     const { setUser } = useUserStore();
     const { setFlashMessage } = useFlashMessageStore();
+
+    // Navigation
+    const navigate = useNavigate();
 
     // Form submit handler
     const submitHandler = async (e: { preventDefault: () => void; }) => {
@@ -39,6 +41,7 @@ const LoginScreen = () => {
         }
     };
 
+    // JSX rendering
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <h1 className="text-3xl font-bold mb-4">Log in</h1>
