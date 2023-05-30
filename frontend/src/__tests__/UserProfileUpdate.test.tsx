@@ -142,8 +142,8 @@ describe('User Profile Test', () => {
         // Replace 'Profile updated successfully' with the exact text of your success message.
         await waitFor(() => {
             expect(screen.getByText('Profile updated successfully')).toBeInTheDocument();
-            expect(screen.getByPlaceholderText('Enter name')).toHaveValue('New Name');
-            expect(screen.getByPlaceholderText('Enter email')).toHaveValue('new@example.com');
+            expect(screen.getByPlaceholderText('Enter name')).toHaveValue(updatedUser.name);
+            expect(screen.getByPlaceholderText('Enter email')).toHaveValue(updatedUser.email);
         });
     });
 });
