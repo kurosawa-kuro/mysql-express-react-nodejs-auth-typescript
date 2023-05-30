@@ -1,13 +1,13 @@
 import { MemoryRouter, useRoutes } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 
-import App from '../App';
-import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/auth/LoginScreen';
+import App from '../../App';
+import HomeScreen from '../../screens/HomeScreen';
+import LoginScreen from '../../screens/auth/LoginScreen';
 
-import { loginUserApi } from '../services/api';
+import { loginUserApi } from '../../services/api';
 
-jest.mock('../services/api');
+jest.mock('../../services/api');
 
 describe('User Login Test', () => {
     const user = {

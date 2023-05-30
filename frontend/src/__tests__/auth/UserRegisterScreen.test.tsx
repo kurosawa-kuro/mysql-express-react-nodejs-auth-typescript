@@ -1,13 +1,13 @@
 import { MemoryRouter, useRoutes } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 
-import App from '../App';
-import HomeScreen from '../screens/HomeScreen';
-import RegisterScreen from '../screens/auth/RegisterScreen';
+import App from '../../App';
+import HomeScreen from '../../screens/HomeScreen';
+import RegisterScreen from '../../screens/auth/RegisterScreen';
 
-import { registerUserApi } from '../services/api';
+import { registerUserApi } from '../../services/api';
 
-jest.mock('../services/api');
+jest.mock('../../services/api');
 
 describe('User Registration Test', () => {
     const user = {

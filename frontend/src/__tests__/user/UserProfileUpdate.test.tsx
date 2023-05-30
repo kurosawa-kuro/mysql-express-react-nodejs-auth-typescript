@@ -1,17 +1,17 @@
 import { MemoryRouter, useRoutes } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen, within } from '@testing-library/react';
 
-import App from '../App';
-import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/auth/LoginScreen';
-import PrivateRoute from '../components/PrivateRoute';
-import ProfileScreen from '../screens/user/ProfileScreen';
+import App from '../../App';
+import HomeScreen from '../../screens/HomeScreen';
+import LoginScreen from '../../screens/auth/LoginScreen';
+import PrivateRoute from '../../components/PrivateRoute';
+import ProfileScreen from '../../screens/user/ProfileScreen';
 
-import { useUserStore, useFlashMessageStore } from '../state/store';
-import { loginUserApi, fetchUserProfileApi, updateUserProfileApi } from '../services/api';
+import { useUserStore, useFlashMessageStore } from '../../state/store';
+import { loginUserApi, fetchUserProfileApi, updateUserProfileApi } from '../../services/api';
 
-jest.mock('../services/api');
-jest.mock('../state/store');
+jest.mock('../../services/api');
+jest.mock('../../state/store');
 
 describe('User Profile Test', () => {
     const user = {
