@@ -1,11 +1,7 @@
-import { MemoryRouter, useRoutes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-
-import App from '../../App';
-import HomeScreen from '../../screens/HomeScreen';
-import RegisterScreen from '../../screens/auth/RegisterScreen';
-
 import { registerUserApi } from '../../services/api';
+import AppWrapper from '../../testUtils/testUtils';
 
 jest.mock('../../services/api');
 
@@ -15,21 +11,6 @@ describe('User Registration Test', () => {
         email: 'test@example.com',
         name: 'Test User',
         isAdmin: false,
-    };
-
-    const AppWrapper = () => {
-        let routes = useRoutes([
-            {
-                path: '/',
-                element: <App />,
-                children: [
-                    { index: true, element: <HomeScreen /> },
-                    { path: 'register', element: <RegisterScreen /> },
-                ],
-            },
-        ]);
-
-        return routes;
     };
 
     const mockRegisterUserApi = registerUserApi as jest.MockedFunction<typeof registerUserApi>;

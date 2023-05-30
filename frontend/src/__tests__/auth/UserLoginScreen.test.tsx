@@ -1,9 +1,6 @@
-import { MemoryRouter, useRoutes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-
-import App from '../../App';
-import HomeScreen from '../../screens/HomeScreen';
-import LoginScreen from '../../screens/auth/LoginScreen';
+import AppWrapper from '../../testUtils/testUtils';
 
 import { loginUserApi } from '../../services/api';
 
@@ -17,20 +14,7 @@ describe('User Login Test', () => {
         isAdmin: false,
     };
 
-    const AppWrapper = () => {
-        let routes = useRoutes([
-            {
-                path: '/',
-                element: <App />,
-                children: [
-                    { index: true, element: <HomeScreen /> },
-                    { path: 'login', element: <LoginScreen /> },
-                ],
-            },
-        ]);
 
-        return routes;
-    };
 
     const mockLoginUserApi = loginUserApi as jest.MockedFunction<typeof loginUserApi>;
 

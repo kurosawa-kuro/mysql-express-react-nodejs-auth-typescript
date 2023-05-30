@@ -1,11 +1,7 @@
-import { MemoryRouter, useRoutes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen, within } from '@testing-library/react';
 
-import App from '../../App';
-import HomeScreen from '../../screens/HomeScreen';
-import LoginScreen from '../../screens/auth/LoginScreen';
-import PrivateRoute from '../../components/PrivateRoute';
-import ProfileScreen from '../../screens/user/ProfileScreen';
+import AppWrapper from '../../testUtils/testUtils';
 
 import { useUserStore, useFlashMessageStore } from '../../state/store';
 import { loginUserApi, fetchUserProfileApi, updateUserProfileApi } from '../../services/api';
@@ -19,28 +15,6 @@ describe('User Profile Test', () => {
         email: 'test@example.com',
         name: 'Test User',
         isAdmin: false,
-    };
-
-    const AppWrapper = () => {
-        let routes = useRoutes([
-            {
-                path: '/',
-                element: <App />,
-                children: [
-                    { index: true, element: <HomeScreen /> },
-                    { path: 'login', element: <LoginScreen /> },
-                    {
-                        path: '',
-                        element: <PrivateRoute />,
-                        children: [
-                            { path: 'profile', element: <ProfileScreen /> },
-                        ],
-                    },
-                ],
-            },
-        ]);
-
-        return routes;
     };
 
     const mockUseUserStore = useUserStore as jest.MockedFunction<typeof useUserStore>;
