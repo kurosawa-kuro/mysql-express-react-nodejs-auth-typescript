@@ -1,36 +1,13 @@
 import { MemoryRouter } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen, within } from '@testing-library/react';
-import { AppWrapper } from '../../testUtils/testUtils';
+import { AppWrapper, setupMocks, user, mockLoginUserApi } from '../../testUtils/testUtils';
 
-import { useUserStore, useFlashMessageStore } from '../../state/store';
-import { loginUserApi, fetchUserProfileApi } from '../../services/api';
 
 jest.mock('../../services/api');
 jest.mock('../../state/store');
 
 describe('User Profile Test', () => {
-    const user = {
-        id: 1,
-        email: 'test@example.com',
-        name: 'Test User',
-        isAdmin: false,
-    };
-
-    const mockUseUserStore = useUserStore as jest.MockedFunction<typeof useUserStore>;
-    const mockUseFlashMessageStore = useFlashMessageStore as jest.MockedFunction<typeof useFlashMessageStore>;
-    const mockLoginUserApi = loginUserApi as jest.MockedFunction<typeof loginUserApi>;
-    const mockFetchUserProfileApi = fetchUserProfileApi as jest.MockedFunction<typeof fetchUserProfileApi>;
-
-    beforeEach(() => {
-        mockUseUserStore.mockReturnValue({ user, setUser: jest.fn() });
-        mockUseFlashMessageStore.mockReturnValue({ flashMessage: null, setFlashMessage: jest.fn() });
-        mockLoginUserApi.mockResolvedValue(user);
-        mockFetchUserProfileApi.mockResolvedValue(user);
-    });
-
-    afterEach(() => {
-        jest.resetAllMocks();
-    });
+    setupMocks();
 
     it('ログイン成功後にProfile画面に遷移できる事を確認', async () => {
         const email = 'test@example.com';
