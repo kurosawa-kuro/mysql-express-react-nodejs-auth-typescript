@@ -21,7 +21,7 @@ export const useRegisterUserHook = () => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            setFlashMessage('Passwords do not match');
             return;
         }
 
@@ -34,15 +34,19 @@ export const useRegisterUserHook = () => {
                 password,
                 isAdmin: false
             });
-            setIsLoading(false);
             if (user) {
                 setUser(user);
+                setFlashMessage('User registration successful!');
+                navigate('/');
+            } else {
+                setUser(null);
+                setFlashMessage('Unable to register. Please try again.');
             }
-            setFlashMessage('User login successful!');
-            navigate('/');
         } catch (error: any) {
-            setIsLoading(false);
             setError(error.message);
+            setFlashMessage('Error registering. Please check your details and try again.');
+        } finally {
+            setIsLoading(false);
         }
     };
 

@@ -1,44 +1,12 @@
 // Importing React Hooks
 import { useState, useEffect } from 'react';
 
-// Importing notification library
-import { toast } from 'react-toastify';
-
 // Importing Custom Hooks
-import { useUserStore } from '../../state/store';
+import { useUserStore, useFlashMessageStore } from '../../state/store';
 
 // Importing API service
 import { fetchUserProfileApi, updateUserProfileApi } from '../../services/api';
 
-export interface FullUser {
-    name: string;
-    password: string;
-    email: string;
-    isAdmin: boolean;
-}
-
-export interface LoginCredentials {
-    password: string;
-    email: string;
-}
-
-export interface UserUpdateData {
-    userId: number;
-    name: string;
-    email: string;
-}
-
-export interface UserWithoutPassword {
-    id: number;
-    name: string;
-    email: string;
-    isAdmin: boolean;
-};
-
-export interface UserUpdateDataFrontend {
-    name: string;
-    email: string;
-}
 /**
  * Custom hook for handling user profile update
  */
@@ -52,6 +20,7 @@ const useUpdateUserHook = () => {
 
     // Global State
     const { setUser } = useUserStore();
+    const { setFlashMessage } = useFlashMessageStore();
 
     // Fetch User Profile
     useEffect(() => {
@@ -63,39 +32,41 @@ const useUpdateUserHook = () => {
                     setName(data.name);
                     setEmail(data.email);
                 } else {
-                    console.error('data is undefined');
+                    setFlashMessage('User data is undefined.');
                 }
             } catch (error: any) {
-                // error handling
+                setFlashMessage('Error fetching user data.');
                 console.error(error);
             } finally {
                 setIsLoading(false);
             }
         };
         fetchUserProfile();
-    }, []);
-
+    }, [setFlashMessage]);
 
     // Form submit handler
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         if (password !== confirmPassword) {
-            toast.error('Passwords do not match');
+            setFlashMessage('Passwords do not match');
             setIsLoading(false);
-        } else {
-            try {
-                const user = await updateUserProfileApi({ name, email });
-                if (user) {
-                    setUser(user);
-                }
-                toast.success('Profile updated successfully');
-            } catch (error: any) {
-                // error handling
-                console.error(error);
-            } finally {
-                setIsLoading(false);
+            return;
+        }
+
+        try {
+            const user = await updateUserProfileApi({ name, email });
+            if (user) {
+                setUser(user);
+                setFlashMessage('Profile updated successfully');
+            } else {
+                setFlashMessage('Unable to update profile. Please try again.');
             }
+        } catch (error: any) {
+            setFlashMessage('Error updating profile. Please check your details and try again.');
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
