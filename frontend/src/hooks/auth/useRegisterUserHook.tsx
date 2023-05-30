@@ -1,7 +1,7 @@
 // frontend\src\hooks\auth\useRegisterUserHook.js
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUserApi } from '../../services/api.js';
+import { registerUserApi } from '../../services/api';
 import { useUserStore, useFlashMessageStore } from '../../state/store';
 
 export const useRegisterUserHook = () => {
