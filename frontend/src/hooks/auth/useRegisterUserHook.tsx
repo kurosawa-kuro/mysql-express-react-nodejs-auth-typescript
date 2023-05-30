@@ -35,7 +35,9 @@ export const useRegisterUserHook = () => {
                 isAdmin: false
             });
             setIsLoading(false);
-            setUser(user);
+            if (user) {
+                setUser(user);
+            }
             setFlashMessage('User login successful!');
             navigate('/');
         } catch (error: any) {

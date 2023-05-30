@@ -85,8 +85,10 @@ const useUpdateUserHook = () => {
             setIsLoading(false);
         } else {
             try {
-                const data = await updateUserProfileApi({ name, email });
-                setUser(data);
+                const user = await updateUserProfileApi({ name, email });
+                if (user) {
+                    setUser(user);
+                }
                 toast.success('Profile updated successfully');
             } catch (error: any) {
                 // error handling

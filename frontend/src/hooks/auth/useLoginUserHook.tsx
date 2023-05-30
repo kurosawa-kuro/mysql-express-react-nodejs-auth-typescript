@@ -20,7 +20,9 @@ const useLoginUserHook = () => {
 
         try {
             const user = await loginUserApi({ email, password });
-            setUser(user);
+            if (user) {
+                setUser(user);
+            }
             setFlashMessage('User login successful!');
             navigate('/');
         } catch (err: ApiError | any) {

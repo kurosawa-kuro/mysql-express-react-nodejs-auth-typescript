@@ -39,27 +39,55 @@ export interface ApiError extends AxiosError {
     message: string;
 }
 
+// Helper function to handle errors
+const handleApiError = (error: any): never => {
+    if (error && error.response) {
+        throw { message: error.response.data.message, ...error };
+    }
+    throw error;
+}
+
 export const registerUserApi = async (user: FullUser) => {
-    const response = await apiClient.post<UserWithoutPassword>('/api/users/register', user);
-    return response.data;
+    try {
+        const response = await apiClient.post<UserWithoutPassword>('/api/users/register', user);
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
 }
 
 export const loginUserApi = async (credentials: LoginCredentials) => {
-    const response = await apiClient.post<UserWithoutPassword>('/api/users/login', credentials);
-    return response.data;
+    try {
+        const response = await apiClient.post<UserWithoutPassword>('/api/users/login', credentials);
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
 };
 
 export const fetchUserProfileApi = async () => {
-    const response = await apiClient.get<UserWithoutPassword>('/api/users/profile');
-    return response.data;
+    try {
+        const response = await apiClient.get<UserWithoutPassword>('/api/users/profile');
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
 };
 
 export const updateUserProfileApi = async (user: UserUpdateDataFrontend) => {
-    const response = await apiClient.put<UserWithoutPassword>('/api/users/profile', user);
-    return response.data;
+    try {
+        const response = await apiClient.put<UserWithoutPassword>('/api/users/profile', user);
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
 };
 
 export const logoutUserApi = async () => {
-    const response = await apiClient.post('/api/users/logout');
-    return response.data;
+    try {
+        const response = await apiClient.post('/api/users/logout');
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
 };
