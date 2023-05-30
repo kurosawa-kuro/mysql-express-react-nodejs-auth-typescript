@@ -59,9 +59,13 @@ const useUpdateUserHook = () => {
             setIsLoading(true);
             try {
                 const data = await fetchUserProfileApi();
-                setName(data.name);
-                setEmail(data.email);
-            } catch (error) {
+                if (data) {
+                    setName(data.name);
+                    setEmail(data.email);
+                } else {
+                    console.error('data is undefined');
+                }
+            } catch (error: any) {
                 // error handling
                 console.error(error);
             } finally {
@@ -70,6 +74,7 @@ const useUpdateUserHook = () => {
         };
         fetchUserProfile();
     }, []);
+
 
     // Form submit handler
     const submitHandler = async (e: React.FormEvent) => {
@@ -83,7 +88,7 @@ const useUpdateUserHook = () => {
                 const data = await updateUserProfileApi({ name, email });
                 setUser(data);
                 toast.success('Profile updated successfully');
-            } catch (error) {
+            } catch (error: any) {
                 // error handling
                 console.error(error);
             } finally {

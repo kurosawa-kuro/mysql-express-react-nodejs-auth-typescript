@@ -1,112 +1,110 @@
-import { render, fireEvent, waitFor, screen, within } from '@testing-library/react';
 import { MemoryRouter, useRoutes } from 'react-router-dom';
-import { loginUserApi } from '../services/api';
-import { useUserStore, useFlashMessageStore } from '../state/store';
+import { render, fireEvent, waitFor, screen, within } from '@testing-library/react';
+
+import App from '../App';
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/auth/LoginScreen';
 import PrivateRoute from '../components/PrivateRoute';
 import ProfileScreen from '../screens/user/ProfileScreen';
-import App from '../App';
+
+import { useUserStore, useFlashMessageStore } from '../state/store';
+import { loginUserApi, fetchUserProfileApi } from '../services/api';
 
 jest.mock('../services/api');
-jest.mock('../state/store', () => ({
-    useUserStore: jest.fn(),
-    useFlashMessageStore: jest.fn(),
-}));
+jest.mock('../state/store');
 
-const user = {
-    id: 1,
-    email: 'test@example.com',
-    name: 'Test User',
-    isAdmin: false,
-};
+describe('User Profile Test', () => {
+    const user = {
+        id: 1,
+        email: 'test@example.com',
+        name: 'Test User',
+        isAdmin: false,
+    };
 
-const AppWrapper = () => {
-    let routes = useRoutes([
-        {
-            path: '/',
-            element: <App />,
-            children: [
-                { index: true, element: <HomeScreen /> },
-                { path: 'login', element: <LoginScreen /> },
-                {
-                    path: '',
-                    element: <PrivateRoute />,
-                    children: [
-                        { path: 'profile', element: <ProfileScreen /> },
-                    ],
-                },
-            ],
-        },
-    ]);
+    const AppWrapper = () => {
+        let routes = useRoutes([
+            {
+                path: '/',
+                element: <App />,
+                children: [
+                    { index: true, element: <HomeScreen /> },
+                    { path: 'login', element: <LoginScreen /> },
+                    {
+                        path: '',
+                        element: <PrivateRoute />,
+                        children: [
+                            { path: 'profile', element: <ProfileScreen /> },
+                        ],
+                    },
+                ],
+            },
+        ]);
 
-    return routes;
-};
+        return routes;
+    };
 
-const mockUseUserStore = useUserStore as jest.MockedFunction<typeof useUserStore>;
-mockUseUserStore.mockReturnValue({ user, setUser: jest.fn() });
-
-const mockUseFlashMessageStore = useFlashMessageStore as jest.MockedFunction<typeof useFlashMessageStore>;
-mockUseFlashMessageStore.mockReturnValue({ flashMessage: null, setFlashMessage: jest.fn() });
-
-
-afterEach(() => {
-    jest.resetAllMocks();
-});
-
-test('ログイン成功後にProfile画面に遷移できる事を確認', async () => {
+    const mockUseUserStore = useUserStore as jest.MockedFunction<typeof useUserStore>;
+    const mockUseFlashMessageStore = useFlashMessageStore as jest.MockedFunction<typeof useFlashMessageStore>;
     const mockLoginUserApi = loginUserApi as jest.MockedFunction<typeof loginUserApi>;
+    const mockFetchUserProfileApi = fetchUserProfileApi as jest.MockedFunction<typeof fetchUserProfileApi>;
 
-    const email = 'test@example.com';
-    const password = 'password';
-
-    mockLoginUserApi.mockResolvedValue(user);
-
-    render(
-        <MemoryRouter initialEntries={['/login']}>
-            <AppWrapper />
-        </MemoryRouter>
-    );
-
-    // ログインフォームの入力と送信
-    const emailInput = screen.getByPlaceholderText('Enter email');
-    const passwordInput = screen.getByPlaceholderText('Enter password');
-    const submitButton = screen.getByTestId('login-form');
-
-    fireEvent.change(emailInput, { target: { value: email } });
-    fireEvent.change(passwordInput, { target: { value: password } });
-    fireEvent.submit(submitButton);
-
-    // loginUserApiが正しく呼び出されたことを検証
-    await waitFor(() => {
-        expect(mockLoginUserApi).toHaveBeenCalledWith({ email, password });
+    beforeEach(() => {
+        mockUseUserStore.mockReturnValue({ user, setUser: jest.fn() });
+        mockUseFlashMessageStore.mockReturnValue({ flashMessage: null, setFlashMessage: jest.fn() });
+        mockLoginUserApi.mockResolvedValue(user);
+        mockFetchUserProfileApi.mockResolvedValue(user);
     });
 
-    // Home画面とHeaderコンポーネント,user.nameが表示されるまで待つ
-    await waitFor(() => {
-        expect(screen.getByText('MERN Auth App')).toBeInTheDocument();
-        expect(screen.getByText(user.name)).toBeInTheDocument();
+    afterEach(() => {
+        jest.resetAllMocks();
     });
 
-    // Profile画面に遷移
-    // Profileリンクをクリック
-    // ユーザ名をクリックしてドロップダウンを表示
-    fireEvent.click(screen.getByText(user.name));
+    it('ログイン成功後にProfile画面に遷移できる事を確認', async () => {
+        const email = 'test@example.com';
+        const password = 'password';
 
-    // ドロップダウン内にProfileリンクが存在することを確認
-    const dropdownMenu = screen.getByTestId('dropdown-menu');
-    const profileLink = within(dropdownMenu).getByText('Profile');
+        render(
+            <MemoryRouter initialEntries={['/login']}>
+                <AppWrapper />
+            </MemoryRouter>
+        );
 
-    // Profileリンクをクリック
-    fireEvent.click(profileLink);
+        // Fill in and submit the login form.
+        const emailInput = screen.getByPlaceholderText('Enter email');
+        const passwordInput = screen.getByPlaceholderText('Enter password');
+        const submitButton = screen.getByTestId('login-form');
 
-    // Profile画面が表示されることを確認
-    await waitFor(() => {
-        // プロフィール画面の具体的な要素やテキストをチェックします。
-        // 下記は一例で、ProfileScreenコンポーネント内の特定の要素やテキストに置き換えてください。
-        expect(screen.getByText('Update')).toBeInTheDocument();
+        fireEvent.change(emailInput, { target: { value: email } });
+        fireEvent.change(passwordInput, { target: { value: password } });
+        fireEvent.submit(submitButton);
+
+        // Check that loginUserApi was called correctly.
+        await waitFor(() => {
+            expect(mockLoginUserApi).toHaveBeenCalledWith({ email, password });
+        });
+
+        // Wait for the HomeScreen and Header components to appear.
+        await waitFor(() => {
+            expect(screen.getByText('MERN Auth App')).toBeInTheDocument();
+            expect(screen.getByText(user.name)).toBeInTheDocument();
+        });
+
+        // Navigate to the profile screen.
+        // Click the user name to open the dropdown.
+        fireEvent.click(screen.getByText(user.name));
+
+        // Check that the dropdown contains a link to the profile screen.
+        const dropdownMenu = screen.getByTestId('dropdown-menu');
+        const profileLink = within(dropdownMenu).getByText('Profile');
+
+        // Click the link to the profile screen.
+        fireEvent.click(profileLink);
+
+        // Check that the profile screen is displayed.
+        await waitFor(() => {
+            // Check for specific elements or text in the ProfileScreen component.
+            // Replace the line below with specific checks for your ProfileScreen component.
+            expect(screen.getByText('Update')).toBeInTheDocument();
+        });
     });
-
-    // デバッグ情報を表示
-    screen.debug();
 });
