@@ -1,14 +1,9 @@
 import { create } from 'zustand'
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
+import { UserWithoutPassword } from '../services/api';
 
 interface UserStore {
-    user: User | null;
-    setUser: (user: User | null) => void;
+    user: UserWithoutPassword | null;
+    setUser: (user: UserWithoutPassword | null) => void;
 };
 
 interface FlashMessageStore {
@@ -18,12 +13,16 @@ interface FlashMessageStore {
 
 const useUserStore = create<UserStore>(set => {
     const userItem = localStorage.getItem('user');
-    const user = userItem ? JSON.parse(userItem) as User : null;
+    const user = userItem ? JSON.parse(userItem) as UserWithoutPassword : null;
 
     return {
         user,
-        setUser: (user: User | null) => {
-            localStorage.setItem('user', JSON.stringify(user));
+        setUser: (user: UserWithoutPassword | null) => {
+            if (user !== null) {
+                localStorage.setItem('user', JSON.stringify(user));
+            } else {
+                localStorage.removeItem('user');
+            }
             set({ user });
         },
     };

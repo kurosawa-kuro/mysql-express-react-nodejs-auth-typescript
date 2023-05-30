@@ -17,16 +17,22 @@ const useLoginUserHook = () => {
 
     const loginUser = async (email: string, password: string) => {
         setIsLoading(true);
+        let user = null;
 
         try {
-            const user = await loginUserApi({ email, password });
+            user = await loginUserApi({ email, password });
             if (user) {
                 setUser(user);
+                setFlashMessage('User login successful!');
+                navigate('/');
+            } else {
+                setUser(null);
+                setFlashMessage('Unable to login. Please try again.');
             }
-            setFlashMessage('User login successful!');
-            navigate('/');
         } catch (err: ApiError | any) {
+            setUser(null);
             toast.error(err?.response?.data?.message || err.message);
+            setFlashMessage('Error logging in. Please check your credentials and try again.');
         } finally {
             setIsLoading(false);
         }
