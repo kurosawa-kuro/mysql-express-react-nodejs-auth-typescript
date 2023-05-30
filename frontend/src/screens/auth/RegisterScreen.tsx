@@ -1,16 +1,12 @@
 // frontend\src\screens\RegisterScreen.jsx
 
-// External Packages
 import { Link } from 'react-router-dom';
-
-// Internal Modules
 import { useRegisterUserHook } from '../../hooks/auth/useRegisterUserHook';
 import { Loader } from '../../components/Loader';
 
 const RegisterScreen = () => {
     // Custom Hook
     const {
-        mutation: registerUserMutation,
         submitHandler,
         name,
         setName,
@@ -19,7 +15,9 @@ const RegisterScreen = () => {
         password,
         setPassword,
         confirmPassword,
-        setConfirmPassword
+        setConfirmPassword,
+        isLoading,
+        error
     } = useRegisterUserHook();
 
     // Component JSX
@@ -87,7 +85,8 @@ const RegisterScreen = () => {
                     Register
                 </button>
 
-                {registerUserMutation.isLoading && <Loader />}
+                {isLoading && <Loader />}
+                {error && <div className="error">{error}</div>}
             </form>
 
             <div>
