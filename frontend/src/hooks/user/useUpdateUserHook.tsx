@@ -1,9 +1,6 @@
 // Importing React Hooks
 import { useState, useEffect } from 'react';
 
-// Importing react-query Hooks
-import { useQuery, useMutation } from '@tanstack/react-query';
-
 // Importing notification library
 import { toast } from 'react-toastify';
 
@@ -51,46 +48,47 @@ const useUpdateUserHook = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     // Global State
     const { setUser } = useUserStore();
 
-    // API Query
-    const { data: userProfile, isLoading } = useQuery<UserWithoutPassword, Error>(['userProfile'], fetchUserProfileApi);
-
+    // Fetch User Profile
     useEffect(() => {
-        if (userProfile) {
-            setName(userProfile.name);
-            setEmail(userProfile.email);
-        }
-    }, [userProfile]);
-
-    // API Mutation
-    const updateUserMutation = useMutation<UserWithoutPassword, Error, UserUpdateDataFrontend>(
-        async ({ name, email }) => {
-            const updatedUser = await updateUserProfileApi({ name, email });
-            return updatedUser;
-        },
-        {
-            // On success
-            onSuccess: (updatedUser) => {
-                setUser(updatedUser);
-                toast.success('Profile updated successfully');
-            },
-            // On error
-            onError: (error) => {
-                // toast.error(error?.response?.data?.message || error.message);
-            },
-        }
-    );
+        const fetchUserProfile = async () => {
+            setIsLoading(true);
+            try {
+                const data = await fetchUserProfileApi();
+                setName(data.name);
+                setEmail(data.email);
+            } catch (error) {
+                // error handling
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchUserProfile();
+    }, []);
 
     // Form submit handler
-    const submitHandler = (e: React.FormEvent) => {
+    const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
         if (password !== confirmPassword) {
             toast.error('Passwords do not match');
+            setIsLoading(false);
         } else {
-            updateUserMutation.mutate({ name, email });
+            try {
+                const data = await updateUserProfileApi({ name, email });
+                setUser(data);
+                toast.success('Profile updated successfully');
+            } catch (error) {
+                // error handling
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 

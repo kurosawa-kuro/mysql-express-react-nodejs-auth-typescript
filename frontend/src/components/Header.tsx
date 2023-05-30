@@ -29,7 +29,7 @@ const Header = () => {
                     <div className="relative">
                         <button className="focus:outline-none" onClick={() => setShowDropdown(!showDropdown)}>{user.name}</button>
                         {showDropdown &&
-                            <div className="absolute right-0 mt-2 bg-white text-black shadow-md rounded p-2">
+                            <div className="absolute right-0 mt-2 bg-white text-black shadow-md rounded p-2" data-testid="dropdown-menu">
                                 <Link to="/profile" className="block py-1 px-2 hover:bg-blue-500 hover:text-white">Profile</Link>
                                 <button onClick={logoutHandler} className="block w-full text-left py-1 px-2 hover:bg-blue-500 hover:text-white">Logout</button>
                             </div>
