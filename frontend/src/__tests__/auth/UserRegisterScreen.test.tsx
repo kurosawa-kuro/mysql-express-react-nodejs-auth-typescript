@@ -1,7 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { registerUserApi } from '../../services/api';
-import AppWrapper from '../../testUtils/testUtils';
+import { AppWrapper } from '../../testUtils/testUtils';
 
 jest.mock('../../services/api');
 

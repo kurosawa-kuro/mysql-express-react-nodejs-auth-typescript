@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router-dom';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import AppWrapper from '../../testUtils/testUtils';
+import { AppWrapper } from '../../testUtils/testUtils';
 
 import { loginUserApi } from '../../services/api';
 

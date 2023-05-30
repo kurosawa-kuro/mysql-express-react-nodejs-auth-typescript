@@ -9,7 +9,7 @@ import RegisterScreen from '../screens/auth/RegisterScreen';
 import PrivateRoute from '../components/PrivateRoute';
 import ProfileScreen from '../screens/user/ProfileScreen';
 
-const AppWrapper: React.FC = () => {
+export const AppWrapper: React.FC = () => {
     let routes = useRoutes([
         {
             path: '/',
@@ -31,5 +31,3 @@ const AppWrapper: React.FC = () => {
 
     return <>{routes}</>;
 };
-
-export default AppWrapper;
